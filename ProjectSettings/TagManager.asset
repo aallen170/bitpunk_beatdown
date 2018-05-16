@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - PlayerSprite
+  - Ground
+  - Ceiling
+  - Player1
+  - Player2
+  - RespawnUp
+  - RespawnDown
+  - RespawnRight
+  - RespawnLeft
+  - ActiveAreaUp
+  - ActiveAreaDown
+  - ActiveAreaRight
+  - ActiveAreaLeft
+  - P1Score
+  - P2Score
+  - P1Win
+  - P2Win
+  - P1WinButton
+  - P2WinButton
+  - P1WinText
+  - P2WinText
+  - QuitBanner
+  - QuitText
+  - QuitYesButton
+  - QuitNoButton
+  - QuitYesText
+  - QuitNoText
+  - PlayerScore
+  - Quit
+  - Pause
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - Obstacles
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: front
+    uniqueID: 2349207293
+    locked: 0

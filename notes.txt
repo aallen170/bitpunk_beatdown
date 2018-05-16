@@ -1,0 +1,7 @@
+﻿- You’re going to want to stick to colliders and rigidbodies for now. You can implement raycasting when needed.
+
+- Something you could do is look at the raycast tutorial, but translate all the code so that it works with just rigidbodies and colliders as opposed to raycasts. (https://www.youtube.com/watch?v=MbWK8bCAU2w)
+
+- You’re going to want to understand the physics code from the 2D tutorial (not the raycasting tutorial). Redo the tutorials online to get a better understanding of it. (https://unity3d.com/learn/tutorials/s/2d-game-creation)
+
+- You’re also gonna want to get familiar with the animation features of Unity. Once you’re able to move your character around smoothly, start looking into the animator.
