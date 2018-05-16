@@ -1,1 +1,1 @@
-# dirty_fights
+# Rusty Fights: A fast-paced platform fighter!
