@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{47FCDC5A-C36A-21F3-4291-663A2BA6B8E2}</ProjectGuid>
+    <ProjectGuid>{43422CDA-0808-DB7B-3FF7-DD0392E2C1C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -79,7 +79,7 @@
      <Compile Include="Assets\Scripts\TEST_Player.cs" />
      <None Include="Assets\AdvancedPolygonCollider\Readme.txt" />
  <Reference Include="Facebook.Unity.Settings">
- <HintPath>C:/Users/aallen170/Documents/dirty_fights/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
+ <HintPath>C:/Users/aallen170/Documents/rusty_fights/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
