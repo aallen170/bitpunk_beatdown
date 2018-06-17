@@ -71,6 +71,7 @@
      <Compile Include="Assets\Scripts\Player_OLD.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerKill.cs" />
+     <Compile Include="Assets\Scripts\PlayerOLD2.cs" />
      <Compile Include="Assets\Scripts\PlayerSprite.cs" />
      <Compile Include="Assets\Scripts\RaycastController.cs" />
      <Compile Include="Assets\Scripts\RB_Controller2D.cs" />

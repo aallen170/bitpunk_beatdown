@@ -6,8 +6,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof (Controller2D))]
 
 public class Player : MonoBehaviour {
-	/*public float jumpHeight = 5;
-	public float jumpDuration = 0.4f;*/
+
 	[Range(1, 50)] public float moveSpeed = 15;
 	[Range(1, 100)] public float jumpPower = 50;
 	[Range(1, 300)] public float fallSpeed = 100;
@@ -19,9 +18,11 @@ public class Player : MonoBehaviour {
 	[Range(1, 20)] public float crouchSpeed = 5;
 
 	float dashFrameCount = 0;
+	float slideAttackFrameCount = 0;
 
 	bool doubleJumped = false;
 	[HideInInspector] public bool divekicked = false;
+	[HideInInspector] public bool slideAttacked = false;
 	bool facingLeft = false;
 	bool facingRight = true;
 	bool dashed = false;
@@ -65,7 +66,7 @@ public class Player : MonoBehaviour {
 
 	public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
 	upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
-	crouchRightSprite, divekickRightSprite, divekickLeftSprite, hitbox;
+	crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeft, slideAttackRight, hitbox;
 
 	Collider2D collidedObject;
 
@@ -96,28 +97,8 @@ public class Player : MonoBehaviour {
 	public static bool p1Win = false;
 	public static bool p2Win = false;
 
-	/*Image p1WinButton, p2WinButton;
-	Text p1WinText, p2WinText;*/
-
 	Canvas p1WinCanvas, p2WinCanvas;
 
-	/*public Vector2 wallJumpClimb;
-	public Vector2 wallJumpOff;
-	public Vector2 wallLeap;
-	public float wallSlideSpeedMax = 3;
-	public float wallStickTime = .25f;
-	float timeToWallUnstick;*/
-
-	/*void OnValidate() {
-		jumpHeight = Mathf.Clamp (jumpHeight, 0.1f, 20f);
-		jumpDuration = Mathf.Clamp (jumpDuration, 0.1f, 5f);
-		moveSpeed = Mathf.Clamp (moveSpeed, 0.1f, 50f);
-		fallSpeed = Mathf.Clamp (fallSpeed, 0f, 1000f);
-		jumpPower = Mathf.Clamp (jumpPower, 1f, 200f);
-		dashSpeed = Mathf.Clamp (dashSpeed, 1f, 50f);
-	}*/
-
-	// Use this for initialization
 	void Start () {
 		controller = GetComponent<Controller2D> ();
 		playerSprite = GetComponent<SpriteRenderer> ();
@@ -145,11 +126,6 @@ public class Player : MonoBehaviour {
 		p1Win = p2Win = false;
 		opponentSprite.enabled = true;
 		opponentIcon.enabled = true;
-		/*p1WinButton = GameObject.FindGameObjectWithTag ("P1WinButton").GetComponent<Image> ();
-		p2WinButton = GameObject.FindGameObjectWithTag ("P2WinButton").GetComponent<Image> ();
-		p1WinText = GameObject.FindGameObjectWithTag ("P1WinText").GetComponent<Text> ();
-		p2WinText = GameObject.FindGameObjectWithTag ("P2WinText").GetComponent<Text> ();
-		p1WinButton.enabled = p2WinButton.enabled = p1WinText.enabled = p2WinText.enabled = false;*/
 		print ("opponent icon = " + opponentIcon);
 		p1WinCanvas = GameObject.FindGameObjectWithTag ("P1Win").GetComponent<Canvas> ();
 		p2WinCanvas = GameObject.FindGameObjectWithTag ("P2Win").GetComponent<Canvas> ();
@@ -159,10 +135,8 @@ public class Player : MonoBehaviour {
 		deathSound = GetComponents<AudioSource> () [0];
 		clingSound = GetComponents<AudioSource> () [1];
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
+	void Update () {
 		if (p1Score.gameScore == 5) {
 			p1Win = true;
 			p1WinCanvas.enabled = true;
@@ -229,7 +203,6 @@ public class Player : MonoBehaviour {
 					transform.position = respawnUp.transform.position;
 					dead = false;
 				}
-				//transform.position = respawn.transform.position;
 				dead = false;
 			}
 		}
@@ -278,29 +251,6 @@ public class Player : MonoBehaviour {
 			else
 				input.y = 0;
 		}
-		//int wallDirX = (controller.collisions.left) ? -1 : 1;
-
-		/*bool wallSliding = false;
-		if ((controller.collisions.left || controller.collisions.right) && !controller.collisions.below) {
-			wallSliding = true;
-
-			if (velocity.y < -wallSlideSpeedMax) {
-				velocity.y = -wallSlideSpeedMax;
-			}
-
-			if (timeToWallUnstick > 0) {
-				velocityXSmoothing = 0;
-				velocity.x = 0;
-
-				if (input.x != wallDirX && input.x != 0) {
-					timeToWallUnstick -= Time.deltaTime;
-				} else {
-					timeToWallUnstick = wallStickTime;
-				}
-			} else {
-				timeToWallUnstick = wallStickTime;
-			}
-		}*/
 
 		grounded = controller.collisions.below;
 		climbingSlope = controller.collisions.climbingSlope;
@@ -309,12 +259,6 @@ public class Player : MonoBehaviour {
 		gravity = -fallSpeed * 2f;
 		accelerationTimeGrounded = 1f / groundedTraction;
 		accelerationTimeAirborne = 1f / airialTraction;
-
-		//timeToJumpApex = jumpDuration / 2f;
-
-		/*gravity = -(2 * jumpHeight) / Mathf.Pow (timeToJumpApex, 2);
-		jumpVelocity = Mathf.Abs (gravity) * timeToJumpApex;
-		print ("Gravity: " + gravity + " Jump Velocity: " + jumpVelocity);*/
 
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
@@ -345,82 +289,30 @@ public class Player : MonoBehaviour {
 			facingRight = false;
 		}
 
-		/*if (gameObject.tag == "Player1") {
-			if (Input.GetKeyDown (KeyCode.S) && !controller.collisions.isAirborne () && !clinging && !crouching) {
-				standingPos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
-				transform.position = new Vector3 (transform.position.x, transform.position.y - 0.5f, transform.position.z);
+		if (gameObject.tag == "Player1") {
+			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
 				crouching = true;
-				print ("crouched");
-			}
-			standingPos.x = transform.position.x;
-			//print ("standing position = " + standingPos);
-			if (Input.GetKeyUp (KeyCode.S) && !controller.collisions.isAirborne () && !clinging && crouching) {
-				transform.position = standingPos;
+			if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
 				crouching = false;
-			}
 		}
 
 		if (gameObject.tag == "Player2") {
-			if (Input.GetKeyDown (KeyCode.DownArrow) && !controller.collisions.isAirborne () && !clinging && !crouching) {
-				standingPos = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
-				transform.position = new Vector3 (transform.position.x, transform.position.y - 0.5f, transform.position.z);
+			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
 				crouching = true;
-				print ("crouched");
-			}
-			standingPos.x = transform.position.x;
-			//print ("standing position = " + standingPos);
-			if (Input.GetKeyUp (KeyCode.DownArrow) && !controller.collisions.isAirborne () && !clinging && crouching) {
-				transform.position = standingPos;
+			if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
 				crouching = false;
-			}
-		}*/
+		}
 
 		if (crouching && facingLeft)
 			playerSprite.sprite = crouchLeftSprite;
 		if (crouching && facingRight)
 			playerSprite.sprite = crouchRightSprite;
 
-		//print ("crouching = " + crouching);
-		//print ("player sprite = " + playerSprite.sprite);
-
-		/*if (Input.GetKeyDown (KeyCode.DownArrow) && facingRight && !climbingSlope && !descendingSlope && !crouching) {
-			transform.position = new Vector3 (transform.position.x - 0.25f, transform.position.y - 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (1f, 0.5f, 1f);
-			crouching = true;
-		}
-
-		if (Input.GetKeyDown (KeyCode.DownArrow) && facingLeft && !climbingSlope && !descendingSlope && !crouching) {
-			transform.position = new Vector3 (transform.position.x + 0.25f, transform.position.y - 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (1f, 0.5f, 1f);
-			crouching = true;
-		}
-
-		if (Input.GetKeyUp (KeyCode.DownArrow) && facingRight && !climbingSlope && !descendingSlope && crouching) {
-			transform.position = new Vector3 (transform.position.x + 0.25f, transform.position.y + 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (0.5f, 1f, 1f);
-			crouching = false;
-		}
-
-		if (Input.GetKeyUp (KeyCode.DownArrow) && facingLeft && !climbingSlope && !descendingSlope && crouching) {
-			transform.position = new Vector3 (transform.position.x - 0.25f, transform.position.y + 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (0.5f, 1f, 1f);
-			crouching = false;
-		}
-
-		if (crouching && !grounded && facingRight) {
-			transform.position = new Vector3 (transform.position.x + 0.25f, transform.position.y + 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (0.5f, 1f, 1f);
-			crouching = false;
-		}
-
-		if (crouching && !grounded && facingLeft) {
-			transform.position = new Vector3 (transform.position.x - 0.25f, transform.position.y + 0.25f, transform.position.z);
-			transform.localScale = new Vector3 (0.5f, 1f, 1f);
-			crouching = false;
-		}*/
-
 		if (Input.GetKeyDown (actionKey) && !controller.collisions.below && !divekicked)
 			divekicked = true;
+
+		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && !slideAttacked)
+			slideAttacked = true;
 
 		if (controller.collisions.below) {
 			divekicked = false;
@@ -469,18 +361,6 @@ public class Player : MonoBehaviour {
 			print ("facing right");
 
 		if (Input.GetKeyDown (jumpKey)) {
-			/*if (wallSliding) {
-				if (wallDirX == input.x) {
-					velocity.x = -wallDirX * wallJumpClimb.x;
-					velocity.y = wallJumpClimb.y;
-				} else if (input.x == 0) {
-					velocity.x = -wallDirX * wallJumpOff.x;
-					velocity.y = wallJumpOff.y;
-				} else {
-					velocity.x = -wallDirX * wallLeap.x;
-					velocity.y = wallLeap.y;
-				}
-			}*/
 			if (controller.collisions.below) {
 				velocity.y = jumpPower;
 			}
@@ -550,7 +430,7 @@ public class Player : MonoBehaviour {
 			controller.Move (velocity * Time.deltaTime);
 		}
 	}
-	
+
 	void DetectClinging() {
 		Vector2 clingNormal = controller.collisions.normal;
 
@@ -561,7 +441,7 @@ public class Player : MonoBehaviour {
 
 		bool upCling, upLeftCling, upRightCling, leftCling, rightCling;
 		upCling = upLeftCling = upRightCling = leftCling = rightCling = false;
-		
+
 		if (clingAngle == 180f) {
 			upCling = true;
 			if(facingLeft)
@@ -592,7 +472,7 @@ public class Player : MonoBehaviour {
 				playerSprite.sprite = leftClingSprite;
 			}
 		}
-		
+
 
 		print ("up right cling = " + upRightCling);
 		if (clingNormal.x < 0)
@@ -693,17 +573,4 @@ public class Player : MonoBehaviour {
 			inLeftArea = inDownArea = inRightArea = false;
 		}
 	}
-
-	/*void OnCollisionEnter2D(Collision2D col) {
-		collidedObject = col.collider;
-
-		Vector3 contactPoint = col.contacts [0].point;
-		Vector3 spriteCenter = boxCollider.bounds.center;
-		Vector3 colCenter = collidedObject.bounds.center;
-
-		rightCollision = contactPoint.x > spriteCenter.x;
-		leftCollision = contactPoint.x < spriteCenter.x;
-		topCollision = contactPoint.y > spriteCenter.y;
-		bottomCollision = contactPoint.y < spriteCenter.y;
-	}*/
 }
