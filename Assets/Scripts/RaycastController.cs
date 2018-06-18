@@ -39,12 +39,12 @@ public class RaycastController : MonoBehaviour {
 	}
 
 	public virtual void Update () {
-		if (Player.crouching) {
+		/*if (Player.crouching) {
 			spriteBoundsSize.x = spriteCollider.bounds.size.x;
 			spriteBoundsSize.y = spriteCollider.bounds.size.y;
 			boxCollider.size = spriteBoundsSize;
 		} else
-			boxCollider.size = standardColliderSize;
+			boxCollider.size = standardColliderSize;*/
 		//CalculateRaySpacing ();
 	}
 

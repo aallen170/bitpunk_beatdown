@@ -16,13 +16,17 @@ public class Player : MonoBehaviour {
 	[Range(1, 100)] public float dashSpeed = 40;
 	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 20)] public float crouchSpeed = 5;
+	[Range(1, 30)] public float slideAttackActiveFrames = 15;
+	[Range(1, 30)] public float guardActiveFrames = 15;
 
 	float dashFrameCount = 0;
 	float slideAttackFrameCount = 0;
+	float guardFrameCount = 0;
 
 	bool doubleJumped = false;
 	[HideInInspector] public bool divekicked = false;
 	[HideInInspector] public bool slideAttacked = false;
+	[HideInInspector] public bool guarded = false;
 	bool facingLeft = false;
 	bool facingRight = true;
 	bool dashed = false;
@@ -33,6 +37,8 @@ public class Player : MonoBehaviour {
 	bool movingLeft = false;
 	bool movingRight = false;
 	bool rotated = false;
+
+	bool canMove = true;
 
 	bool grounded;
 	bool climbingSlope;
@@ -66,7 +72,8 @@ public class Player : MonoBehaviour {
 
 	public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
 	upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
-	crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeft, slideAttackRight, hitbox;
+	crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeftSprite, slideAttackRightSprite,
+	guardRightSprite, guardLeftSprite, hitbox;
 
 	Collider2D collidedObject;
 
@@ -98,6 +105,8 @@ public class Player : MonoBehaviour {
 	public static bool p2Win = false;
 
 	Canvas p1WinCanvas, p2WinCanvas;
+
+	bool lockFacing = false;
 
 	void Start () {
 		controller = GetComponent<Controller2D> ();
@@ -137,6 +146,46 @@ public class Player : MonoBehaviour {
 	}
 
 	void Update () {
+
+		UpdateScore ();
+
+		CheckActiveArea ();
+		if (inLeftArea)
+			print ("in left area");
+		if (inRightArea)
+			print ("in right area");
+		if (inUpArea)
+			print ("in up area");
+		if (inDownArea)
+			print ("in down area");
+
+		DetectDeath ();
+
+		DetectDirectionalInputs ();
+
+		ColPhysChecks ();
+
+		DetectMovement ();
+
+		DetectDivekicking ();
+		print ("divekicked = " + divekicked);
+
+		DetectCrouching ();
+
+		DetectSlideAttack ();
+
+		DetectDash ();
+
+		DetectJumping ();
+
+		DetectClinging ();
+
+		DetectGuard ();
+
+		MovePlayer ();
+	}
+
+	void UpdateScore() {
 		if (p1Score.gameScore == 5) {
 			p1Win = true;
 			p1WinCanvas.enabled = true;
@@ -150,18 +199,28 @@ public class Player : MonoBehaviour {
 			Destroy (opponent);
 		if (p2Win && gameObject.tag == "Player2")
 			Destroy (opponent);
+	}
 
-		CheckActiveArea ();
+	void CheckActiveArea() {
+		if (boxCollider.bounds.center.x < activeAreaLeft.bounds.max.x && boxCollider.bounds.center.y < activeAreaLeft.bounds.max.y) {
+			inLeftArea = true;
+			inRightArea = inUpArea = inDownArea = false;
+		}
+		if (boxCollider.bounds.center.x > activeAreaRight.bounds.min.x && boxCollider.bounds.center.y < activeAreaRight.bounds.max.y) {
+			inRightArea = true;
+			inLeftArea = inUpArea = inDownArea = false;
+		}
+		if (boxCollider.bounds.center.x > activeAreaLeft.bounds.max.x && boxCollider.bounds.center.x < activeAreaRight.bounds.min.x && boxCollider.bounds.center.y < activeAreaUp.bounds.min.y) {
+			inDownArea = true;
+			inLeftArea = inUpArea = inRightArea = false;
+		}
+		if (boxCollider.bounds.center.y > activeAreaUp.bounds.min.y) {
+			inUpArea = true;
+			inLeftArea = inDownArea = inRightArea = false;
+		}
+	}
 
-		if (inLeftArea)
-			print ("in left area");
-		if (inRightArea)
-			print ("in right area");
-		if (inUpArea)
-			print ("in up area");
-		if (inDownArea)
-			print ("in down area");
-
+	void DetectDeath() {
 		if (dead) {
 			deathSound.Play ();
 			if (gameObject.tag == "Player1" && !opponentScript.divekicked) {
@@ -206,22 +265,9 @@ public class Player : MonoBehaviour {
 				dead = false;
 			}
 		}
+	}
 
-		if (collidedObject != null) {
-			if (boxCollider.bounds.min.y < collidedObject.bounds.max.y)
-				clipping = true;
-			else
-				clipping = false;
-		}
-		if (clipping && velocity.y < 0) {
-			clipAmount = collidedObject.bounds.max.y - boxCollider.bounds.min.y;
-			transform.position = new Vector3 (transform.position.x, transform.position.y + clipAmount, transform.position.z);
-			print (clipAmount);
-		}
-
-		if (clipping)
-			print ("clipping");
-
+	void DetectDirectionalInputs() {
 		if (gameObject.tag == "Player1") {
 			if (Input.GetKey (KeyCode.A) && !Input.GetKey (KeyCode.D))
 				input.x = -1;
@@ -251,7 +297,9 @@ public class Player : MonoBehaviour {
 			else
 				input.y = 0;
 		}
+	}
 
+	void ColPhysChecks() {
 		grounded = controller.collisions.below;
 		climbingSlope = controller.collisions.climbingSlope;
 		descendingSlope = controller.collisions.descendingSlope;
@@ -263,7 +311,9 @@ public class Player : MonoBehaviour {
 		if (controller.collisions.above || controller.collisions.below) {
 			velocity.y = 0;
 		}
+	}
 
+	void DetectMovement() {
 		if (input.x == 0 && input.y == 0)
 			moving = false;
 		else
@@ -271,14 +321,14 @@ public class Player : MonoBehaviour {
 
 		if (input.x > 0) {
 			movingRight = true;
-			print ("moving right");
 		}
 
 		if (input.x < 0) {
 			movingLeft = true;
-			print ("moving left");
 		}
+	}
 
+	void DetectDivekicking() {
 		if (!divekicked && input.x > 0) {
 			facingLeft = false;
 			facingRight = true;
@@ -289,6 +339,16 @@ public class Player : MonoBehaviour {
 			facingRight = false;
 		}
 
+		if (Input.GetKeyDown (actionKey) && !controller.collisions.below && !divekicked)
+			divekicked = true;
+
+		if (controller.collisions.below) {
+			divekicked = false;
+			doubleJumped = false;
+		}
+	}
+
+	void DetectCrouching() {
 		if (gameObject.tag == "Player1") {
 			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
 				crouching = true;
@@ -307,18 +367,27 @@ public class Player : MonoBehaviour {
 			playerSprite.sprite = crouchLeftSprite;
 		if (crouching && facingRight)
 			playerSprite.sprite = crouchRightSprite;
+	}
 
-		if (Input.GetKeyDown (actionKey) && !controller.collisions.below && !divekicked)
-			divekicked = true;
-
-		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && !slideAttacked)
+	void DetectSlideAttack() {
+		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && crouching && !slideAttacked)
 			slideAttacked = true;
 
-		if (controller.collisions.below) {
-			divekicked = false;
-			doubleJumped = false;
+		if (slideAttackFrameCount >= slideAttackActiveFrames) {
+			slideAttacked = false;
+			slideAttackFrameCount = 0;
 		}
 
+		if (slideAttacked) {
+			slideAttackFrameCount++;
+			if (facingLeft)
+				playerSprite.sprite = slideAttackLeftSprite;
+			if (facingRight)
+				playerSprite.sprite = slideAttackRightSprite;
+		}
+	}
+
+	void DetectDash() {
 		if (moving && Input.GetKeyDown (actionKey) && controller.collisions.below && !dashed) {
 			dashed = true;
 			if (facingLeft)
@@ -347,29 +416,19 @@ public class Player : MonoBehaviour {
 			dashed = false;
 			dashFrameCount = 0;
 		}
+	}
 
-		if (dashed)
-			print ("dashing");
-
-		if (!dashed)
-			print ("not dashing");
-
-		if (facingLeft)
-			print ("facing left");
-
-		if (facingRight)
-			print ("facing right");
-
+	void DetectJumping() {
 		if (Input.GetKeyDown (jumpKey)) {
 			if (controller.collisions.below) {
 				velocity.y = jumpPower;
 			}
 		}
 
-		if (facingLeft && !clinging && !crouching)
+		if (facingLeft && !clinging && !crouching && !lockFacing)
 			playerSprite.sprite = runLeftSprite;
 
-		if (facingRight && !clinging && !crouching)
+		if (facingRight && !clinging && !crouching && !lockFacing)
 			playerSprite.sprite = runRightSprite;
 
 		if (facingLeft && controller.collisions.isAirborne () && !clinging)
@@ -381,53 +440,6 @@ public class Player : MonoBehaviour {
 		if (Input.GetKeyDown (jumpKey) && !controller.collisions.below && !doubleJumped && !clinging) {
 			velocity.y = jumpPower;
 			doubleJumped = true;
-		}
-
-		DetectClinging ();
-
-		print ("divekicked = " + divekicked);
-
-		if (controller.collisions.below && canPlayClingSound) {
-			clingSound.Play ();
-			canPlayClingSound = false;
-		}
-
-		if (controller.collisions.isAirborne () && !clinging)
-			canPlayClingSound = true;
-
-		if (facingRight && divekicked && !controller.collisions.below && !clinging) {
-			velocity.y = -divekickSpeed;
-			velocity.x = divekickSpeed;
-			playerSprite.sprite = divekickRightSprite;
-			controller.Move (velocity * Time.deltaTime);
-		}
-
-		if (facingLeft && divekicked && !controller.collisions.below && !clinging) {
-			velocity.y = -divekickSpeed;
-			velocity.x = -divekickSpeed;
-			playerSprite.sprite = divekickLeftSprite;
-			controller.Move (velocity * Time.deltaTime);
-		}
-
-		if (!divekicked && dashed && !clinging && !crouching) {
-			float targetVelocityX = input.x * dashSpeed;
-			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-			velocity.y += gravity * Time.deltaTime;
-			controller.Move (velocity * Time.deltaTime);
-		}
-
-		if (!divekicked && !dashed && !clinging && !crouching) {
-			float targetVelocityX = input.x * moveSpeed;
-			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-			velocity.y += gravity * Time.deltaTime;
-			controller.Move (velocity * Time.deltaTime);
-		}
-
-		if (!divekicked && !dashed && !clinging && crouching) {
-			float targetVelocityX = input.x * crouchSpeed;
-			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
-			velocity.y += gravity * Time.deltaTime;
-			controller.Move (velocity * Time.deltaTime);
 		}
 	}
 
@@ -453,7 +465,6 @@ public class Player : MonoBehaviour {
 		if (clingAngle == 135f) {
 			if (clingNormal.x < 0) {
 				upRightCling = true;
-				print ("clung");
 				playerSprite.sprite = upRightClingSprite;
 			}
 			if (clingNormal.x > 0) {
@@ -472,9 +483,7 @@ public class Player : MonoBehaviour {
 				playerSprite.sprite = leftClingSprite;
 			}
 		}
-
-
-		print ("up right cling = " + upRightCling);
+			
 		if (clingNormal.x < 0)
 			print ("clingNormal.x = " + clingNormal.x);
 
@@ -553,24 +562,95 @@ public class Player : MonoBehaviour {
 				clingSound.Play ();
 			canPlayClingSound = false;
 		}
+
+		if (controller.collisions.below && canPlayClingSound) {
+			clingSound.Play ();
+			canPlayClingSound = false;
+		}
+
+		if (controller.collisions.isAirborne () && !clinging)
+			canPlayClingSound = true;
 	}
 
-	void CheckActiveArea() {
-		if (boxCollider.bounds.center.x < activeAreaLeft.bounds.max.x && boxCollider.bounds.center.y < activeAreaLeft.bounds.max.y) {
-			inLeftArea = true;
-			inRightArea = inUpArea = inDownArea = false;
+	void DetectGuard() {
+		if (!guarded) {
+			canMove = true;
+			lockFacing = false;
 		}
-		if (boxCollider.bounds.center.x > activeAreaRight.bounds.min.x && boxCollider.bounds.center.y < activeAreaRight.bounds.max.y) {
-			inRightArea = true;
-			inLeftArea = inUpArea = inDownArea = false;
+
+		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne() && !moving && !clinging)
+			guarded = true;
+
+		if (guardFrameCount >= guardActiveFrames) {
+			guarded = false;
+			guardFrameCount = 0;
 		}
-		if (boxCollider.bounds.center.x > activeAreaLeft.bounds.max.x && boxCollider.bounds.center.x < activeAreaRight.bounds.min.x && boxCollider.bounds.center.y < activeAreaUp.bounds.min.y) {
-			inDownArea = true;
-			inLeftArea = inUpArea = inRightArea = false;
-		}
-		if (boxCollider.bounds.center.y > activeAreaUp.bounds.min.y) {
-			inUpArea = true;
-			inLeftArea = inDownArea = inRightArea = false;
+
+		if (guarded) {
+			canMove = false;
+			guardFrameCount++;
+			if (facingLeft && !lockFacing) {
+				playerSprite.sprite = guardLeftSprite;
+				lockFacing = true;
+			}
+			if (facingRight && !lockFacing) {
+				playerSprite.sprite = guardRightSprite;
+				lockFacing = true;
+			}
 		}
 	}
+
+	void MovePlayer() {
+		if (facingRight && divekicked && !controller.collisions.below && !clinging && canMove) {
+			velocity.y = -divekickSpeed;
+			velocity.x = divekickSpeed;
+			playerSprite.sprite = divekickRightSprite;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (facingLeft && divekicked && !controller.collisions.below && !clinging && canMove) {
+			velocity.y = -divekickSpeed;
+			velocity.x = -divekickSpeed;
+			playerSprite.sprite = divekickLeftSprite;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (!divekicked && dashed && !clinging && !crouching && canMove) {
+			float targetVelocityX = input.x * dashSpeed;
+			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+			velocity.y += gravity * Time.deltaTime;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (!divekicked && !dashed && !clinging && !crouching && canMove) {
+			float targetVelocityX = input.x * moveSpeed;
+			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+			velocity.y += gravity * Time.deltaTime;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (!divekicked && !dashed && !clinging && crouching && canMove) {
+			float targetVelocityX = input.x * crouchSpeed;
+			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
+			velocity.y += gravity * Time.deltaTime;
+			controller.Move (velocity * Time.deltaTime);
+		}
+	}
+
+	/*void DetectClipping() {
+		if (collidedObject != null) {
+			if (boxCollider.bounds.min.y < collidedObject.bounds.max.y)
+				clipping = true;
+			else
+				clipping = false;
+		}
+		if (clipping && velocity.y < 0) {
+			clipAmount = collidedObject.bounds.max.y - boxCollider.bounds.min.y;
+			transform.position = new Vector3 (transform.position.x, transform.position.y + clipAmount, transform.position.z);
+			print (clipAmount);
+		}
+
+		if (clipping)
+			print ("clipping");
+	}*/
 }
