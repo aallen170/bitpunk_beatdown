@@ -14,12 +14,14 @@ public class Player : MonoBehaviour {
 	[Range(1, 100)] public float airialTraction = 20;
 	[Range(1, 100)] public float divekickSpeed = 40;
 	[Range(1, 100)] public float dashSpeed = 40;
-	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 20)] public float crouchSpeed = 5;
+	[Range(1, 30)] public float dashActiveFrames = 15;
+	[Range(1, 120)] public float clingActiveFrames = 30;
 	[Range(1, 30)] public float slideAttackActiveFrames = 15;
 	[Range(1, 30)] public float guardActiveFrames = 15;
 
 	float dashFrameCount = 0;
+	float clingFrameCount = 0;
 	float slideAttackFrameCount = 0;
 	float guardFrameCount = 0;
 
@@ -419,7 +421,7 @@ public class Player : MonoBehaviour {
 	}
 
 	void DetectJumping() {
-		if (Input.GetKeyDown (jumpKey)) {
+		if (Input.GetKeyDown (jumpKey) && canMove) {
 			if (controller.collisions.below) {
 				velocity.y = jumpPower;
 			}
@@ -490,6 +492,9 @@ public class Player : MonoBehaviour {
 		if (upCling || upLeftCling || upRightCling || leftCling || rightCling)
 			clinging = true;
 
+		if (clinging)
+			clingFrameCount++;
+
 		print ("cling angle = " + clingAngle);
 
 		if (clinging && Input.GetKeyDown (jumpKey)) {
@@ -545,6 +550,10 @@ public class Player : MonoBehaviour {
 				playerSprite.sprite = divekickLeftSprite;
 			if (facingRight)
 				playerSprite.sprite = divekickRightSprite;
+		}
+
+		if(clinging && clingFrameCount >= clingActiveFrames) {
+			
 		}
 
 		if (clinging) {
