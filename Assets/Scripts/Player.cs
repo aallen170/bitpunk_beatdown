@@ -13,11 +13,13 @@ public class Player : MonoBehaviour {
 	[Range(1, 100)] public float groundedTraction = 50;
 	[Range(1, 100)] public float airialTraction = 20;
 	[Range(1, 100)] public float divekickSpeed = 40;
+	[Range(1, 100)] public float slideAttackSpeed = 20;
 	[Range(1, 100)] public float dashSpeed = 40;
 	[Range(1, 20)] public float crouchSpeed = 5;
 	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 120)] public float clingActiveFrames = 30;
-	[Range(1, 30)] public float slideAttackActiveFrames = 15;
+	[Range(1, 30)] public float slideAttackActiveFrames = 6;
+	[Range(1, 200)] public float slideAttackCooldownFrames = 5;
 	[Range(1, 30)] public float guardActiveFrames = 15;
 
 	float dashFrameCount = 0;
@@ -29,6 +31,7 @@ public class Player : MonoBehaviour {
 	[HideInInspector] public bool divekicked = false;
 	[HideInInspector] public bool slideAttacked = false;
 	[HideInInspector] public bool guarded = false;
+	bool canSlideAttack = true;
 	bool facingLeft = false;
 	bool facingRight = true;
 	bool dashed = false;
@@ -137,12 +140,9 @@ public class Player : MonoBehaviour {
 		p1Win = p2Win = false;
 		opponentSprite.enabled = true;
 		opponentIcon.enabled = true;
-		print ("opponent icon = " + opponentIcon);
 		p1WinCanvas = GameObject.FindGameObjectWithTag ("P1Win").GetComponent<Canvas> ();
 		p2WinCanvas = GameObject.FindGameObjectWithTag ("P2Win").GetComponent<Canvas> ();
 		p1WinCanvas.enabled = p2WinCanvas.enabled = false;
-		print ("p1 win canvas = " + p1WinCanvas);
-		print ("p2 win canvas = " + p2WinCanvas);
 		deathSound = GetComponents<AudioSource> () [0];
 		clingSound = GetComponents<AudioSource> () [1];
 	}
@@ -152,14 +152,6 @@ public class Player : MonoBehaviour {
 		UpdateScore ();
 
 		CheckActiveArea ();
-		if (inLeftArea)
-			print ("in left area");
-		if (inRightArea)
-			print ("in right area");
-		if (inUpArea)
-			print ("in up area");
-		if (inDownArea)
-			print ("in down area");
 
 		DetectDeath ();
 
@@ -170,7 +162,6 @@ public class Player : MonoBehaviour {
 		DetectMovement ();
 
 		DetectDivekicking ();
-		print ("divekicked = " + divekicked);
 
 		DetectCrouching ();
 
@@ -226,7 +217,6 @@ public class Player : MonoBehaviour {
 		if (dead) {
 			deathSound.Play ();
 			if (gameObject.tag == "Player1" && !opponentScript.divekicked) {
-				print ("P1 died");
 				p2Score.gameScore++;
 				if (opponentScript.inLeftArea) {
 					transform.position = respawnRight.transform.position;
@@ -246,7 +236,6 @@ public class Player : MonoBehaviour {
 				}
 			}
 			if (gameObject.tag == "Player2") {
-				print ("P2 died");
 				p1Score.gameScore++;
 				if (opponentScript.inLeftArea) {
 					transform.position = respawnRight.transform.position;
@@ -331,12 +320,12 @@ public class Player : MonoBehaviour {
 	}
 
 	void DetectDivekicking() {
-		if (!divekicked && input.x > 0) {
+		if (!divekicked && !slideAttacked && input.x > 0) {
 			facingLeft = false;
 			facingRight = true;
 		}
 
-		if (!divekicked && input.x < 0) {
+		if (!divekicked && !slideAttacked && input.x < 0) {
 			facingLeft = true;
 			facingRight = false;
 		}
@@ -351,18 +340,22 @@ public class Player : MonoBehaviour {
 	}
 
 	void DetectCrouching() {
-		if (gameObject.tag == "Player1") {
-			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
-				crouching = true;
-			if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
-				crouching = false;
+		if (!guarded) {
+			if (gameObject.tag == "Player1") {
+				if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
+					crouching = true;
+				if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
+					crouching = false;
+			}
 		}
 
-		if (gameObject.tag == "Player2") {
-			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
-				crouching = true;
-			if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
-				crouching = false;
+		if (!guarded) {
+			if (gameObject.tag == "Player2") {
+				if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
+					crouching = true;
+				if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
+					crouching = false;
+			}
 		}
 
 		if (crouching && facingLeft)
@@ -372,20 +365,22 @@ public class Player : MonoBehaviour {
 	}
 
 	void DetectSlideAttack() {
-		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && crouching && !slideAttacked)
+		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && crouching && canSlideAttack && !guarded) {
 			slideAttacked = true;
+			canSlideAttack = false;
+		}
 
 		if (slideAttackFrameCount >= slideAttackActiveFrames) {
 			slideAttacked = false;
+		}
+
+		if (slideAttackFrameCount >= (slideAttackActiveFrames + slideAttackCooldownFrames)) {
+			canSlideAttack = true;
 			slideAttackFrameCount = 0;
 		}
 
-		if (slideAttacked) {
+		if (!canSlideAttack) {
 			slideAttackFrameCount++;
-			if (facingLeft)
-				playerSprite.sprite = slideAttackLeftSprite;
-			if (facingRight)
-				playerSprite.sprite = slideAttackRightSprite;
 		}
 	}
 
@@ -552,16 +547,9 @@ public class Player : MonoBehaviour {
 				playerSprite.sprite = divekickRightSprite;
 		}
 
-		if(clinging && clingFrameCount >= clingActiveFrames) {
+		if (clinging && clingFrameCount >= clingActiveFrames) {
 			
 		}
-
-		if (clinging) {
-			print ("clinging");
-		} else
-			print ("not clinging");
-
-		print ("cling normal = " + clingNormal);
 
 		if (clinging) {
 			velocity.x = 0;
@@ -610,35 +598,62 @@ public class Player : MonoBehaviour {
 	}
 
 	void MovePlayer() {
-		if (facingRight && divekicked && !controller.collisions.below && !clinging && canMove) {
+		if (facingRight)
+			print ("facing right");
+		if (facingLeft)
+			print ("facing left");
+
+		if (slideAttacked)
+			print ("slide attacked");
+
+		if (canMove)
+			print ("can move");
+		else if (!canMove)
+			print ("cannot move");
+		
+		if (facingRight && divekicked && controller.collisions.isAirborne() && !clinging && !guarded) {
 			velocity.y = -divekickSpeed;
 			velocity.x = divekickSpeed;
 			playerSprite.sprite = divekickRightSprite;
 			controller.Move (velocity * Time.deltaTime);
 		}
 
-		if (facingLeft && divekicked && !controller.collisions.below && !clinging && canMove) {
+		if (facingLeft && divekicked && controller.collisions.isAirborne() && !clinging && !guarded) {
 			velocity.y = -divekickSpeed;
 			velocity.x = -divekickSpeed;
 			playerSprite.sprite = divekickLeftSprite;
 			controller.Move (velocity * Time.deltaTime);
 		}
 
-		if (!divekicked && dashed && !clinging && !crouching && canMove) {
+		if (facingRight && slideAttacked && !clinging) {
+			velocity.y += gravity * Time.deltaTime;
+			velocity.x = slideAttackSpeed;
+			playerSprite.sprite = slideAttackRightSprite;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (facingLeft && slideAttacked && !clinging) {
+			velocity.y += gravity * Time.deltaTime;
+			velocity.x = -slideAttackSpeed;
+			playerSprite.sprite = slideAttackLeftSprite;
+			controller.Move (velocity * Time.deltaTime);
+		}
+
+		if (!divekicked && dashed && !clinging && !crouching && !guarded && !slideAttacked) {
 			float targetVelocityX = input.x * dashSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime);
 		}
 
-		if (!divekicked && !dashed && !clinging && !crouching && canMove) {
+		if (!divekicked && !dashed && !clinging && !crouching && !guarded && !slideAttacked) {
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime);
 		}
 
-		if (!divekicked && !dashed && !clinging && crouching && canMove) {
+		if (!divekicked && !dashed && !clinging && crouching && !guarded && !slideAttacked) {
 			float targetVelocityX = input.x * crouchSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;

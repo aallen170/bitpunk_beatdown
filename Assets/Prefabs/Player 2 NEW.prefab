@@ -590,10 +590,13 @@ MonoBehaviour:
   groundedTraction: 50
   airialTraction: 20
   divekickSpeed: 40
+  slideAttackSpeed: 40
   dashSpeed: 40
-  dashActiveFrames: 15
   crouchSpeed: 5
-  slideAttackActiveFrames: 15
+  dashActiveFrames: 15
+  clingActiveFrames: 30
+  slideAttackActiveFrames: 6
+  slideAttackCooldownFrames: 20
   guardActiveFrames: 15
   divekicked: 0
   slideAttacked: 0
