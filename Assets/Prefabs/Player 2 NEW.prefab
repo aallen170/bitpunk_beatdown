@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4506978960262744}
   - component: {fileID: 61027902440873478}
   - component: {fileID: 114350688005120676}
-  - component: {fileID: 114642164769502870}
   - component: {fileID: 114004005538268280}
   - component: {fileID: 212674464800855334}
   - component: {fileID: 60207325480609116}
@@ -29,6 +28,7 @@ GameObject:
   - component: {fileID: 114751661126154574}
   - component: {fileID: 82029102209461156}
   - component: {fileID: 82570693864023886}
+  - component: {fileID: 114335064419346750}
   m_Layer: 0
   m_Name: Player 2 NEW
   m_TagString: Player2
@@ -72,7 +72,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1088328870543290}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 9.88, y: -5.84, z: 0.0748639}
+  m_LocalPosition: {x: 7, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4025295293342034}
@@ -573,6 +573,63 @@ MonoBehaviour:
         height: 0
     Value:
       List: []
+--- !u!114 &114335064419346750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1088328870543290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5d142085c8baf44ea69e500f9cfa6ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 20
+  jumpPower: 50
+  fallSpeed: 100
+  groundedTraction: 50
+  airialTraction: 20
+  divekickSpeed: 40
+  slideAttackSpeed: 40
+  dashSpeed: 40
+  crouchSpeed: 5
+  dashActiveFrames: 15
+  clingActiveFrames: 30
+  slideAttackActiveFrames: 6
+  slideAttackCooldownFrames: 20
+  guardActiveFrames: 15
+  divekicked: 0
+  slideAttacked: 0
+  guarded: 0
+  jumpKey: 258
+  actionKey: 259
+  runLeftSprite: {fileID: 21300000, guid: 4a9750a3062684fd69a96260d967b18c, type: 3}
+  runRightSprite: {fileID: 21300000, guid: 8e1b3baffb7564dbcbb0f70db3cd5940, type: 3}
+  upClingLeftSprite: {fileID: 21300000, guid: 39c73dc778f5b4ab6ada8a68ea18f7aa, type: 3}
+  upClingRightSprite: {fileID: 21300000, guid: 96de03cb0bee44933a17c2abc314a633, type: 3}
+  upLeftClingSprite: {fileID: 21300000, guid: 14fec8b656aef2e40b806b6841770b47, type: 3}
+  upRightClingSprite: {fileID: 21300000, guid: 25a3e8daaa4e3d14d9f0f6e2b608b6bd, type: 3}
+  leftClingSprite: {fileID: 21300000, guid: 080dccd59c6f948988c0bef892fc76ee, type: 3}
+  rightClingSprite: {fileID: 21300000, guid: 5dad08366f18a48c2be63d6b9acf20c8, type: 3}
+  jumpFallLeft: {fileID: 21300000, guid: c33cd14f3f0d04e9b8f14bc4e7ae7088, type: 3}
+  jumpFallRight: {fileID: 21300000, guid: f456c7dc48bf84d2c89d7c0ee3265595, type: 3}
+  crouchLeftSprite: {fileID: 21300000, guid: a5d5a818f44281548884f6542a7b0ec9, type: 3}
+  crouchRightSprite: {fileID: 21300000, guid: 5bfbfad5cce687f44a86f471191b0af4, type: 3}
+  divekickRightSprite: {fileID: 21300000, guid: a0e334da32e805243a1928e39e13c5ad,
+    type: 3}
+  divekickLeftSprite: {fileID: 21300000, guid: aa17709037be4c246a2d27c0abef1ec1, type: 3}
+  slideAttackLeftSprite: {fileID: 21300000, guid: 91c2c14f71c929e45b15ca66b72854b7,
+    type: 3}
+  slideAttackRightSprite: {fileID: 21300000, guid: c77470bd1ccdfe2418fa93b5d6fe34a7,
+    type: 3}
+  guardRightSprite: {fileID: 21300000, guid: 373f2cae1edc72d46ba9a02c96e24472, type: 3}
+  guardLeftSprite: {fileID: 21300000, guid: 0e739cb2ec3acb346bdaf90cd411867e, type: 3}
+  hitbox: {fileID: 21300000, guid: bd93f09b1496b41f9ad8a1c736abbf61, type: 3}
+  dead: 0
+  inUpArea: 0
+  inDownArea: 0
+  inLeftArea: 0
+  inRightArea: 0
 --- !u!114 &114350688005120676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -593,50 +650,6 @@ MonoBehaviour:
   verticalRaySpacing: 0
   boxCollider: {fileID: 0}
   spriteCollider: {fileID: 0}
---- !u!114 &114642164769502870
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1088328870543290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4553305d5085bbe4e84f2521fc806c73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 20
-  jumpPower: 50
-  fallSpeed: 100
-  groundedTraction: 50
-  airialTraction: 20
-  divekickSpeed: 40
-  dashSpeed: 40
-  dashActiveFrames: 15
-  crouchSpeed: 5
-  divekicked: 0
-  jumpKey: 258
-  actionKey: 259
-  runLeftSprite: {fileID: 21300000, guid: 4a9750a3062684fd69a96260d967b18c, type: 3}
-  runRightSprite: {fileID: 21300000, guid: 8e1b3baffb7564dbcbb0f70db3cd5940, type: 3}
-  upClingLeftSprite: {fileID: 21300000, guid: 39c73dc778f5b4ab6ada8a68ea18f7aa, type: 3}
-  upClingRightSprite: {fileID: 21300000, guid: 96de03cb0bee44933a17c2abc314a633, type: 3}
-  upLeftClingSprite: {fileID: 21300000, guid: 14fec8b656aef2e40b806b6841770b47, type: 3}
-  upRightClingSprite: {fileID: 21300000, guid: 25a3e8daaa4e3d14d9f0f6e2b608b6bd, type: 3}
-  leftClingSprite: {fileID: 21300000, guid: 080dccd59c6f948988c0bef892fc76ee, type: 3}
-  rightClingSprite: {fileID: 21300000, guid: 5dad08366f18a48c2be63d6b9acf20c8, type: 3}
-  jumpFallLeft: {fileID: 21300000, guid: c33cd14f3f0d04e9b8f14bc4e7ae7088, type: 3}
-  jumpFallRight: {fileID: 21300000, guid: f456c7dc48bf84d2c89d7c0ee3265595, type: 3}
-  crouchLeftSprite: {fileID: 21300000, guid: a5d5a818f44281548884f6542a7b0ec9, type: 3}
-  crouchRightSprite: {fileID: 21300000, guid: 5bfbfad5cce687f44a86f471191b0af4, type: 3}
-  divekickRightSprite: {fileID: 21300000, guid: a0e334da32e805243a1928e39e13c5ad,
-    type: 3}
-  divekickLeftSprite: {fileID: 21300000, guid: aa17709037be4c246a2d27c0abef1ec1, type: 3}
-  hitbox: {fileID: 0}
-  dead: 0
-  inUpArea: 0
-  inDownArea: 0
-  inLeftArea: 0
-  inRightArea: 0
 --- !u!114 &114751661126154574
 MonoBehaviour:
   m_ObjectHideFlags: 1
