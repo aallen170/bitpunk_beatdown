@@ -126,6 +126,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.RB_Controller2D
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.CallbackExecutor
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Advertisements.dll:UnityEngine.Advertisements.Editor.Placeholder
+67de35dbc8346c8863db8376c78950fc Assembly-CSharp.dll:.Player
 e587e299d12afd62f6b07fba293930eb Assembly-CSharp.dll:.Controller2D
 a01767c9db7c7323a181f5f12f5371b9 Assembly-CSharp.dll:.Player_OLD
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PlayerSprite
@@ -163,7 +164,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.XR.WSA.Spa
 4ca5a4c8eb3ee514f1275c30c3210f9c Assembly-CSharp.dll:.PhysicsObject
 9de3a22eca9aefadba2d10d5987cefe3 UnityEngine.SpatialTracking.dll:UnityEngine.SpatialTracking.TrackedPoseDriver
 b786ea3ccc6b1c36213bef07731158c5 Assembly-CSharp.dll:DigitalRuby.AdvancedPolygonCollider.AdvancedPolygonCollider
-16def4530cd590ae7ed431ddb8635e91 Assembly-CSharp.dll:.Player
+16def4530cd590ae7ed431ddb8635e91 Assembly-CSharp.dll:.PlayerOLD2
 94a32ecdffaeca814d031553c751c50c Assembly-CSharp.dll:.P2Score
 054507777f149b5e388a7ea0d0710f80 Assembly-CSharp.dll:.PlayerPlatformController
 f523eeba2b7ea87139e97537bf69d53e Assembly-CSharp.dll:.TEST_Controller2D
