@@ -216,7 +216,7 @@ public class Player : MonoBehaviour {
 	void DetectDeath() {
 		if (dead) {
 			deathSound.Play ();
-			if (gameObject.tag == "Player1" && !opponentScript.divekicked) {
+			if (gameObject.tag == "Player1") {
 				p2Score.gameScore++;
 				if (opponentScript.inLeftArea) {
 					transform.position = respawnRight.transform.position;
@@ -371,6 +371,10 @@ public class Player : MonoBehaviour {
 			print ("player1 gaurding");
 		if (guarded && gameObject.tag == "Player2")
 			print ("player2 gaurding");
+		if (gameObject.tag == "Player1")
+			print ("p1 input = " + input);
+		if (gameObject.tag == "Player2")
+			print ("p2 input = " + input);
 	}
 
 	void DetectSlideAttack() {
