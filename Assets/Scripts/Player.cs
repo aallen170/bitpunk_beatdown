@@ -13,9 +13,9 @@ public class Player : MonoBehaviour {
 	[Range(1, 100)] public float groundedTraction = 50;
 	[Range(1, 100)] public float airialTraction = 20;
 	[Range(1, 100)] public float divekickSpeed = 40;
-	[Range(1, 100)] public float slideAttackSpeed = 20;
+	[Range(0, 100)] public float slideAttackSpeed = 20;
 	[Range(1, 100)] public float dashSpeed = 40;
-	[Range(1, 20)] public float crouchSpeed = 5;
+	[Range(0, 20)] public float crouchSpeed = 5;
 	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 120)] public float clingActiveFrames = 30;
 	[Range(1, 30)] public float slideAttackActiveFrames = 6;
@@ -362,6 +362,15 @@ public class Player : MonoBehaviour {
 			playerSprite.sprite = crouchLeftSprite;
 		if (crouching && facingRight)
 			playerSprite.sprite = crouchRightSprite;
+
+		if (crouching && gameObject.tag == "Player1")
+			print ("player1 crouching");
+		if (crouching && gameObject.tag == "Player2")
+			print ("player2 crouching");
+		if (guarded && gameObject.tag == "Player1")
+			print ("player1 gaurding");
+		if (guarded && gameObject.tag == "Player2")
+			print ("player2 gaurding");
 	}
 
 	void DetectSlideAttack() {
