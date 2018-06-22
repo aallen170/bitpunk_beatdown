@@ -176,6 +176,9 @@ public class Player : MonoBehaviour {
 		DetectGuard ();
 
 		MovePlayer ();
+
+		if (controller.collisions.isAirborne ())
+			print ("airborne");
 	}
 
 	void UpdateScore() {

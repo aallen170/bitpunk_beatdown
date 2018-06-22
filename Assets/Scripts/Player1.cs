@@ -176,6 +176,11 @@ public class Player1 : MonoBehaviour {
 		DetectGuard ();
 
 		MovePlayer ();
+
+		if (controller.collisions.isAirborne ())
+			print ("airborne");
+		if (grounded)
+			print ("grounded");
 	}
 
 	void UpdateScore() {
@@ -301,7 +306,7 @@ public class Player1 : MonoBehaviour {
 	}
 
 	void DetectCrouching() {
-		if (!guarded) {
+		if (!guarded && !slideAttacked) {
 			if (input.y == -1 && !controller.collisions.isAirborne () && !clinging && !crouching)
 				crouching = true;
 			if (input.y > -1 && !controller.collisions.isAirborne () && !clinging && crouching)
@@ -317,8 +322,12 @@ public class Player1 : MonoBehaviour {
 	void DetectSlideAttack() {
 		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne () && crouching && canSlideAttack && !guarded) {
 			slideAttacked = true;
+			crouching = false;
 			canSlideAttack = false;
 		}
+
+		if (slideAttacked && controller.collisions.isAirborne ())
+			slideAttacked = false;
 
 		if (slideAttackFrameCount >= slideAttackActiveFrames) {
 			slideAttacked = false;
@@ -335,7 +344,7 @@ public class Player1 : MonoBehaviour {
 	}
 
 	void DetectDash() {
-		if (moving && Input.GetKeyDown (actionKey) && controller.collisions.below && !dashed) {
+		if (moving && Input.GetKeyDown (actionKey) && controller.collisions.below && !dashed && !slideAttacked) {
 			dashed = true;
 			if (facingLeft)
 				dashedLeft = true;
@@ -502,6 +511,7 @@ public class Player1 : MonoBehaviour {
 		}
 
 		if (clinging) {
+			print ("clinging");
 			velocity.x = 0;
 			velocity.y = 0;
 			controller.Move (velocity * Time.deltaTime);
@@ -566,6 +576,7 @@ public class Player1 : MonoBehaviour {
 			velocity.x = divekickSpeed;
 			playerSprite.sprite = divekickRightSprite;
 			controller.Move (velocity * Time.deltaTime);
+			print ("divekicking to the right");
 		}
 
 		if (facingLeft && divekicked && controller.collisions.isAirborne() && !clinging && !guarded) {
@@ -573,6 +584,7 @@ public class Player1 : MonoBehaviour {
 			velocity.x = -divekickSpeed;
 			playerSprite.sprite = divekickLeftSprite;
 			controller.Move (velocity * Time.deltaTime);
+			print ("divekicking to the left");
 		}
 
 		if (facingRight && slideAttacked && !clinging) {
@@ -580,6 +592,7 @@ public class Player1 : MonoBehaviour {
 			velocity.x = slideAttackSpeed;
 			playerSprite.sprite = slideAttackRightSprite;
 			controller.Move (velocity * Time.deltaTime);
+			print ("slide attacking to the right");
 		}
 
 		if (facingLeft && slideAttacked && !clinging) {
@@ -587,6 +600,7 @@ public class Player1 : MonoBehaviour {
 			velocity.x = -slideAttackSpeed;
 			playerSprite.sprite = slideAttackLeftSprite;
 			controller.Move (velocity * Time.deltaTime);
+			print ("slide attacking to the left");
 		}
 
 		if (!divekicked && dashed && !clinging && !crouching && !guarded && !slideAttacked) {
@@ -594,13 +608,22 @@ public class Player1 : MonoBehaviour {
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime);
+			print ("dashing");
 		}
+
+		print ("in move function: divekicked = " + divekicked);
+		print ("in move function: dashed = " + dashed);
+		print ("in move function: clinging = " + clinging);
+		print ("in move function: crouching = " + crouching);
+		print ("in move function: guarded = " + guarded);
+		print ("in move function: slidAttacked = " + slideAttacked);
 
 		if (!divekicked && !dashed && !clinging && !crouching && !guarded && !slideAttacked) {
 			float targetVelocityX = input.x * moveSpeed;
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime);
+			print ("moving");
 		}
 
 		if (!divekicked && !dashed && !clinging && crouching && !guarded && !slideAttacked) {
@@ -608,6 +631,7 @@ public class Player1 : MonoBehaviour {
 			velocity.x = Mathf.SmoothDamp (velocity.x, targetVelocityX, ref velocityXSmoothing, (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne);
 			velocity.y += gravity * Time.deltaTime;
 			controller.Move (velocity * Time.deltaTime);
+			print ("crouching");
 		}
 	}
 
