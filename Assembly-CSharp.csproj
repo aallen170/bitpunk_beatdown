@@ -62,14 +62,13 @@
      <Compile Include="Assets\Scripts\For2dTut\PhysicsObject.cs" />
      <Compile Include="Assets\Scripts\For2dTut\PlayerPlatformController.cs" />
      <Compile Include="Assets\Scripts\FPSDisplay.cs" />
-     <Compile Include="Assets\Scripts\GuardKill.cs" />
      <Compile Include="Assets\Scripts\Menu.cs" />
      <Compile Include="Assets\Scripts\NewController.cs" />
      <Compile Include="Assets\Scripts\P1Score.cs" />
      <Compile Include="Assets\Scripts\P2Score.cs" />
      <Compile Include="Assets\Scripts\PlatformController.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Player_OLD.cs" />
+     <Compile Include="Assets\Scripts\Player_OLD2.cs" />
      <Compile Include="Assets\Scripts\Player1.cs" />
      <Compile Include="Assets\Scripts\Player2.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />

@@ -31,6 +31,7 @@ public class Player2 : MonoBehaviour {
 	[HideInInspector] public bool divekicked = false;
 	[HideInInspector] public bool slideAttacked = false;
 	[HideInInspector] public bool guarded = false;
+	[HideInInspector] public bool shotProjectile = false;
 	bool canSlideAttack = true;
 	bool facingLeft = false;
 	bool facingRight = true;
@@ -78,7 +79,7 @@ public class Player2 : MonoBehaviour {
 	public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
 	upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
 	crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeftSprite, slideAttackRightSprite,
-	guardRightSprite, guardLeftSprite, hitbox;
+	guardRightSprite, guardLeftSprite, projectile;
 
 	Collider2D collidedObject;
 

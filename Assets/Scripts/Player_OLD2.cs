@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 [RequireComponent (typeof (Controller2D))]
 
-public class Player : MonoBehaviour {
+public class Player_OLD2 : MonoBehaviour {
 
 	[Range(1, 50)] public float moveSpeed = 15;
 	[Range(1, 100)] public float jumpPower = 50;
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour {
 
 	[HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
 
-	Player opponentScript;
+	Player_OLD2 opponentScript;
 
 	P1Score p1Score;
 	P2Score p2Score;
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour {
 		activeAreaDown = GameObject.FindGameObjectWithTag ("ActiveAreaDown").GetComponent<BoxCollider2D> ();
 		activeAreaLeft = GameObject.FindGameObjectWithTag ("ActiveAreaLeft").GetComponent<BoxCollider2D> ();
 		activeAreaRight = GameObject.FindGameObjectWithTag ("ActiveAreaRight").GetComponent<BoxCollider2D> ();
-		opponentScript = opponent.GetComponent<Player> ();
+		opponentScript = opponent.GetComponent<Player_OLD2> ();
 		opponentSprite = opponent.GetComponent<SpriteRenderer> ();
 		opponentIcon = opponent.GetComponentInChildren<SpriteRenderer> ();
 		p1Score = GameObject.FindGameObjectWithTag ("P1Score").GetComponent<P1Score> ();

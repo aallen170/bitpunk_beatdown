@@ -19,18 +19,21 @@ public class Player1 : MonoBehaviour {
 	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 120)] public float clingActiveFrames = 30;
 	[Range(1, 30)] public float slideAttackActiveFrames = 6;
-	[Range(1, 200)] public float slideAttackCooldownFrames = 5;
+	[Range(1, 50)] public float slideAttackCooldownFrames = 5;
+	[Range(1, 50)] public float projectileCooldownFrames = 5;
 	[Range(1, 30)] public float guardActiveFrames = 15;
 
 	float dashFrameCount = 0;
 	float clingFrameCount = 0;
 	float slideAttackFrameCount = 0;
+	float projectileFrameCount = 0;
 	float guardFrameCount = 0;
 
 	bool doubleJumped = false;
 	[HideInInspector] public bool divekicked = false;
 	[HideInInspector] public bool slideAttacked = false;
 	[HideInInspector] public bool guarded = false;
+	[HideInInspector] public bool shotProjectile = false;
 	bool canSlideAttack = true;
 	bool facingLeft = false;
 	bool facingRight = true;
@@ -49,8 +52,9 @@ public class Player1 : MonoBehaviour {
 	bool climbingSlope;
 	bool descendingSlope;
 
-	public KeyCode jumpKey = KeyCode.Period;
-	public KeyCode actionKey = KeyCode.Slash;
+	public KeyCode jumpKey = KeyCode.J;
+	public KeyCode actionKey = KeyCode.K;
+	public KeyCode projectileKey = KeyCode.L;
 
 	float accelerationTimeGrounded;
 	float accelerationTimeAirborne;
@@ -78,7 +82,7 @@ public class Player1 : MonoBehaviour {
 	public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
 	upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
 	crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeftSprite, slideAttackRightSprite,
-	guardRightSprite, guardLeftSprite, hitbox;
+	guardRightSprite, guardLeftSprite, projectile;
 
 	Collider2D collidedObject;
 
@@ -530,11 +534,6 @@ public class Player1 : MonoBehaviour {
 	}
 
 	void DetectGuard() {
-		if (!guarded) {
-			canMove = true;
-			lockFacing = false;
-		}
-
 		if (Input.GetKeyDown (actionKey) && !controller.collisions.isAirborne() && !moving && !clinging)
 			guarded = true;
 
@@ -554,6 +553,19 @@ public class Player1 : MonoBehaviour {
 				playerSprite.sprite = guardRightSprite;
 				lockFacing = true;
 			}
+		}
+	}
+
+	void DetectProjectile() {
+		if (Input.GetKeyDown (projectileKey) && !divekicked && !slideAttacked && !guarded)
+			shotProjectile = true;
+
+		if (shotProjectile)
+			projectileFrameCount++;
+
+		if (projectileFrameCount >= projectileCooldownFrames) {
+			shotProjectile = false;
+			projectileFrameCount = 0;
 		}
 	}
 
