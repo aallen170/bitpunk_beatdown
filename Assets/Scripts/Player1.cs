@@ -6,7 +6,7 @@ using UnityEngine.UI;
 [RequireComponent (typeof (Controller2D))]
 
 public class Player1 : MonoBehaviour {
-
+	// plz push
 	[Range(1, 50)] public float moveSpeed = 15;
 	[Range(1, 100)] public float jumpPower = 50;
 	[Range(1, 300)] public float fallSpeed = 100;
