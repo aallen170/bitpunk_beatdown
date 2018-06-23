@@ -84,7 +84,7 @@ public class PlayerOLD2 : MonoBehaviour {
 
 	[HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
 
-	Player opponentScript;
+	PlayerOLD2 opponentScript;
 
 	P1Score p1Score;
 	P2Score p2Score;
@@ -137,7 +137,7 @@ public class PlayerOLD2 : MonoBehaviour {
 		activeAreaDown = GameObject.FindGameObjectWithTag ("ActiveAreaDown").GetComponent<BoxCollider2D> ();
 		activeAreaLeft = GameObject.FindGameObjectWithTag ("ActiveAreaLeft").GetComponent<BoxCollider2D> ();
 		activeAreaRight = GameObject.FindGameObjectWithTag ("ActiveAreaRight").GetComponent<BoxCollider2D> ();
-		opponentScript = opponent.GetComponent<Player> ();
+		opponentScript = opponent.GetComponent<PlayerOLD2> ();
 		opponentSprite = opponent.GetComponent<SpriteRenderer> ();
 		opponentIcon = opponent.GetComponentInChildren<SpriteRenderer> ();
 		p1Score = GameObject.FindGameObjectWithTag ("P1Score").GetComponent<P1Score> ();

@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{43422CDA-0808-DB7B-3FF7-DD0392E2C1C8}</ProjectGuid>
+    <ProjectGuid>{E29B032A-951E-78E2-4412-C044449CF47F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -67,8 +67,10 @@
      <Compile Include="Assets\Scripts\P1Score.cs" />
      <Compile Include="Assets\Scripts\P2Score.cs" />
      <Compile Include="Assets\Scripts\PlatformController.cs" />
-     <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\Player_OLD.cs" />
+     <Compile Include="Assets\Scripts\Player_OLD2.cs" />
+     <Compile Include="Assets\Scripts\Player1.cs" />
+     <Compile Include="Assets\Scripts\Player2.cs" />
      <Compile Include="Assets\Scripts\PlayerController.cs" />
      <Compile Include="Assets\Scripts\PlayerKill.cs" />
      <Compile Include="Assets\Scripts\PlayerOLD2.cs" />
@@ -80,7 +82,7 @@
      <Compile Include="Assets\Scripts\TEST_Player.cs" />
      <None Include="Assets\AdvancedPolygonCollider\Readme.txt" />
  <Reference Include="Facebook.Unity.Settings">
- <HintPath>C:/Users/aallen170/Documents/rusty_fights/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
+ <HintPath>C:/Users/aallen170/Documents/bitpunk_beatdown/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

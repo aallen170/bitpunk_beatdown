@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 [RequireComponent (typeof (Controller2D))]
 
-public class Player : MonoBehaviour {
+public class Player_OLD2 : MonoBehaviour {
 
 	[Range(1, 50)] public float moveSpeed = 15;
 	[Range(1, 100)] public float jumpPower = 50;
@@ -13,9 +13,9 @@ public class Player : MonoBehaviour {
 	[Range(1, 100)] public float groundedTraction = 50;
 	[Range(1, 100)] public float airialTraction = 20;
 	[Range(1, 100)] public float divekickSpeed = 40;
-	[Range(1, 100)] public float slideAttackSpeed = 20;
+	[Range(0, 100)] public float slideAttackSpeed = 20;
 	[Range(1, 100)] public float dashSpeed = 40;
-	[Range(1, 20)] public float crouchSpeed = 5;
+	[Range(0, 20)] public float crouchSpeed = 5;
 	[Range(1, 30)] public float dashActiveFrames = 15;
 	[Range(1, 120)] public float clingActiveFrames = 30;
 	[Range(1, 30)] public float slideAttackActiveFrames = 6;
@@ -97,7 +97,7 @@ public class Player : MonoBehaviour {
 
 	[HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
 
-	Player opponentScript;
+	Player_OLD2 opponentScript;
 
 	P1Score p1Score;
 	P2Score p2Score;
@@ -132,7 +132,7 @@ public class Player : MonoBehaviour {
 		activeAreaDown = GameObject.FindGameObjectWithTag ("ActiveAreaDown").GetComponent<BoxCollider2D> ();
 		activeAreaLeft = GameObject.FindGameObjectWithTag ("ActiveAreaLeft").GetComponent<BoxCollider2D> ();
 		activeAreaRight = GameObject.FindGameObjectWithTag ("ActiveAreaRight").GetComponent<BoxCollider2D> ();
-		opponentScript = opponent.GetComponent<Player> ();
+		opponentScript = opponent.GetComponent<Player_OLD2> ();
 		opponentSprite = opponent.GetComponent<SpriteRenderer> ();
 		opponentIcon = opponent.GetComponentInChildren<SpriteRenderer> ();
 		p1Score = GameObject.FindGameObjectWithTag ("P1Score").GetComponent<P1Score> ();
@@ -176,6 +176,9 @@ public class Player : MonoBehaviour {
 		DetectGuard ();
 
 		MovePlayer ();
+
+		if (controller.collisions.isAirborne ())
+			print ("airborne");
 	}
 
 	void UpdateScore() {
@@ -216,7 +219,7 @@ public class Player : MonoBehaviour {
 	void DetectDeath() {
 		if (dead) {
 			deathSound.Play ();
-			if (gameObject.tag == "Player1" && !opponentScript.divekicked) {
+			if (gameObject.tag == "Player1") {
 				p2Score.gameScore++;
 				if (opponentScript.inLeftArea) {
 					transform.position = respawnRight.transform.position;
@@ -362,6 +365,19 @@ public class Player : MonoBehaviour {
 			playerSprite.sprite = crouchLeftSprite;
 		if (crouching && facingRight)
 			playerSprite.sprite = crouchRightSprite;
+
+		if (crouching && gameObject.tag == "Player1")
+			print ("player1 crouching");
+		if (crouching && gameObject.tag == "Player2")
+			print ("player2 crouching");
+		if (guarded && gameObject.tag == "Player1")
+			print ("player1 gaurding");
+		if (guarded && gameObject.tag == "Player2")
+			print ("player2 gaurding");
+		if (gameObject.tag == "Player1")
+			print ("p1 input = " + input);
+		if (gameObject.tag == "Player2")
+			print ("p2 input = " + input);
 	}
 
 	void DetectSlideAttack() {

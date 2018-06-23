@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{6B95DD1B-EE09-5CEA-E77C-7037B9365E7B}</ProjectGuid>
+    <ProjectGuid>{199CBD1B-2E0A-2051-3CA8-A7CB4E946D36}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
@@ -53,7 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\AdvancedPolygonCollider\Script\Editor\AdvancedPolygonColliderEditor.cs" />
  <Reference Include="Facebook.Unity.Settings">
- <HintPath>C:/Users/aallen170/Documents/rusty_fights/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
+ <HintPath>C:/Users/aallen170/Documents/bitpunk_beatdown/Library/FacebookSDK/Facebook.Unity.Settings.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
@@ -142,7 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp.csproj">
-      <Project>{43422CDA-0808-DB7B-3FF7-DD0392E2C1C8}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
+      <Project>{E29B032A-951E-78E2-4412-C044449CF47F}</Project>      <Name>Assembly-CSharp</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
