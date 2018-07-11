@@ -63,7 +63,13 @@ public class Menu : MonoBehaviour {
 	}
 
 	public void Update() {
-		if (Input.GetKey ("escape"))
+        print("pauseHold = " + pauseHold);
+
+        if (Input.GetKeyDown("escape") &&
+            (sceneIndex == 1 || sceneIndex == 2))
+            SceneManager.LoadScene(0);
+
+        if (Input.GetKey ("escape"))
 			pauseHold++;
 
 		if (Input.GetKeyUp ("escape"))
@@ -71,10 +77,6 @@ public class Menu : MonoBehaviour {
 
 		if (pauseHold >= 180)
 			Application.Quit ();
-
-        if (Input.GetKeyDown("escape") &&
-            (sceneIndex == 0 || sceneIndex == 1 || sceneIndex == 2))
-            SceneManager.LoadScene(0);
 
 		if (sceneIndex != 2 && sceneIndex != 1 && sceneIndex != 0) {
 			print ("scene check running");
