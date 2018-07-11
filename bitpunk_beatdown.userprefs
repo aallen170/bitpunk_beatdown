@@ -1,16 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Player1.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Projectile.cs">
     <Files>
-      <File FileName="Assets\Scripts\Player1.cs" Line="568" Column="29" />
-      <File FileName="Assets\Scripts\Player2.cs" Line="179" Column="17" />
+      <File FileName="Assets\Scripts\Player1.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Player2.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Controller2D.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\RaycastController.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\PlayerKill.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Player_OLD2.cs" Line="100" Column="8" />
-      <File FileName="Assets\Scripts\PlayerOLD2.cs" Line="140" Column="52" />
-      <File FileName="Assets\Scripts\RB_Player.cs" Line="23" Column="1" />
-      <File FileName="Assets\Scripts\Controller2D_OLD.cs" Line="21" Column="1" />
+      <File FileName="Assets\Scripts\Player_OLD2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerOLD2.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\RB_Player.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Controller2D_OLD.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Projectile.cs" Line="9" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -26,12 +26,17 @@ public class Menu : MonoBehaviour {
 		SceneManager.LoadScene (1);
 	}
 
+    public void ButtonConfig()
+    {
+        SceneManager.LoadScene(2);
+    }
+
 	public void Stage1() {
-		SceneManager.LoadScene (2);
+		SceneManager.LoadScene (3);
 	}
 
 	public void Stage2() {
-		SceneManager.LoadScene (3);
+		SceneManager.LoadScene (4);
 	}
 
 	public void QuitBoxYes() {
@@ -49,7 +54,7 @@ public class Menu : MonoBehaviour {
 
 	public void Start() {
 		sceneIndex = SceneManager.GetActiveScene ().buildIndex;
-		if (sceneIndex != 1 && sceneIndex != 0) {
+		if (sceneIndex != 2 && sceneIndex != 1 && sceneIndex != 0) {
 			quitCanvas = GameObject.FindGameObjectWithTag ("Quit").GetComponent<Canvas> ();
 			pauseCanvas = GameObject.FindGameObjectWithTag ("Pause").GetComponent<Canvas> ();
 			quitCanvas.enabled = false;
@@ -67,9 +72,11 @@ public class Menu : MonoBehaviour {
 		if (pauseHold >= 180)
 			Application.Quit ();
 
-		print ("scene index = " + sceneIndex);
+        if (Input.GetKeyDown("escape") &&
+            (sceneIndex == 0 || sceneIndex == 1 || sceneIndex == 2))
+            SceneManager.LoadScene(0);
 
-		if (sceneIndex != 1 && sceneIndex != 0) {
+		if (sceneIndex != 2 && sceneIndex != 1 && sceneIndex != 0) {
 			print ("scene check running");
 			paused = pauseCanvas.enabled;
 

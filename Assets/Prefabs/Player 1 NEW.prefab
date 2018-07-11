@@ -28,7 +28,7 @@ GameObject:
   - component: {fileID: 114615672045970218}
   - component: {fileID: 82349124838223020}
   - component: {fileID: 82334513906339916}
-  - component: {fileID: 114977122363241922}
+  - component: {fileID: 114550491948248820}
   m_Layer: 0
   m_Name: Player 1 NEW
   m_TagString: Player1
@@ -198,54 +198,69 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -278,54 +293,69 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - serializedVersion: 2
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - serializedVersion: 2
+    - serializedVersion: 3
       time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -562,6 +592,88 @@ MonoBehaviour:
         height: 0
     Value:
       List: []
+--- !u!114 &114550491948248820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1628394911287256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f60b5af2e56d263498a703299352a7a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 20
+  jumpPower: 50
+  fallSpeed: 100
+  groundedTraction: 50
+  airialTraction: 20
+  divekickSpeed: 40
+  slideAttackSpeed: 20
+  dashSpeed: 40
+  crouchSpeed: 5
+  dashActiveFrames: 15
+  clingActiveFrames: 30
+  slideAttackActiveFrames: 6
+  slideAttackCooldownFrames: 5
+  projectileCooldownFrames: 5
+  guardActiveFrames: 15
+  pushBackSpeed: 50
+  pushBackActiveFrames: 10
+  stunActiveFrames: 60
+  divekicked: 0
+  slideAttacked: 0
+  guarded: 0
+  shotProjectile: 0
+  inPushBack: 0
+  wallSplat: 0
+  stunned: 0
+  continueStun: 0
+  facingLeft: 0
+  facingRight: 1
+  hitWithProjectile: 0
+  jumpKey: 106
+  actionKey: 107
+  guardKey: 108
+  projectileKey: 32
+  runLeftSprite: {fileID: 21300000, guid: 4a9750a3062684fd69a96260d967b18c, type: 3}
+  runRightSprite: {fileID: 21300000, guid: 8e1b3baffb7564dbcbb0f70db3cd5940, type: 3}
+  upClingLeftSprite: {fileID: 21300000, guid: 39c73dc778f5b4ab6ada8a68ea18f7aa, type: 3}
+  upClingRightSprite: {fileID: 21300000, guid: 96de03cb0bee44933a17c2abc314a633, type: 3}
+  upLeftClingSprite: {fileID: 21300000, guid: 14fec8b656aef2e40b806b6841770b47, type: 3}
+  upRightClingSprite: {fileID: 21300000, guid: 25a3e8daaa4e3d14d9f0f6e2b608b6bd, type: 3}
+  leftClingSprite: {fileID: 21300000, guid: 080dccd59c6f948988c0bef892fc76ee, type: 3}
+  rightClingSprite: {fileID: 21300000, guid: 5dad08366f18a48c2be63d6b9acf20c8, type: 3}
+  jumpFallLeft: {fileID: 21300000, guid: c33cd14f3f0d04e9b8f14bc4e7ae7088, type: 3}
+  jumpFallRight: {fileID: 21300000, guid: f456c7dc48bf84d2c89d7c0ee3265595, type: 3}
+  crouchLeftSprite: {fileID: 21300000, guid: a5d5a818f44281548884f6542a7b0ec9, type: 3}
+  crouchRightSprite: {fileID: 21300000, guid: 5bfbfad5cce687f44a86f471191b0af4, type: 3}
+  divekickRightSprite: {fileID: 21300000, guid: a0e334da32e805243a1928e39e13c5ad,
+    type: 3}
+  divekickLeftSprite: {fileID: 21300000, guid: aa17709037be4c246a2d27c0abef1ec1, type: 3}
+  slideAttackLeftSprite: {fileID: 21300000, guid: 91c2c14f71c929e45b15ca66b72854b7,
+    type: 3}
+  slideAttackRightSprite: {fileID: 21300000, guid: c77470bd1ccdfe2418fa93b5d6fe34a7,
+    type: 3}
+  guardRightSprite: {fileID: 21300000, guid: 373f2cae1edc72d46ba9a02c96e24472, type: 3}
+  guardLeftSprite: {fileID: 21300000, guid: 0e739cb2ec3acb346bdaf90cd411867e, type: 3}
+  pushBackLeftSprite: {fileID: 21300000, guid: b3096442db9e0224c94eb9b48764be81, type: 3}
+  pushBackRightSprite: {fileID: 21300000, guid: 9a30ef7030c61fa4aaa461fabb92a64b,
+    type: 3}
+  wallSplatLeftSprite: {fileID: 21300000, guid: e27c70d0762358f4e95e55c5f538c8ce,
+    type: 3}
+  wallSplatRightSprite: {fileID: 21300000, guid: ecb6617518df3ab4d8f2ce2aebd889dc,
+    type: 3}
+  stunnedLeftSprite: {fileID: 21300000, guid: 3e811564fd3fda2438044171c9380e92, type: 3}
+  stunnedRightSprite: {fileID: 21300000, guid: cb349305149d3024f93a1b77c079abbb, type: 3}
+  dashLeftSprite: {fileID: 21300000, guid: 541846b78427acc46b94becfa53ec54f, type: 3}
+  dashRightSprite: {fileID: 21300000, guid: ff19fd9338a503a419f43852408d63f7, type: 3}
+  boxCollider: {fileID: 0}
+  dead: 0
+  inUpArea: 0
+  inDownArea: 0
+  inLeftArea: 0
+  inRightArea: 0
 --- !u!114 &114615672045970218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -604,63 +716,6 @@ MonoBehaviour:
   verticalRaySpacing: 0
   boxCollider: {fileID: 0}
   spriteCollider: {fileID: 0}
---- !u!114 &114977122363241922
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1628394911287256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5d142085c8baf44ea69e500f9cfa6ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 20
-  jumpPower: 50
-  fallSpeed: 100
-  groundedTraction: 50
-  airialTraction: 20
-  divekickSpeed: 40
-  slideAttackSpeed: 40
-  dashSpeed: 40
-  crouchSpeed: 5
-  dashActiveFrames: 15
-  clingActiveFrames: 30
-  slideAttackActiveFrames: 6
-  slideAttackCooldownFrames: 20
-  guardActiveFrames: 15
-  divekicked: 0
-  slideAttacked: 0
-  guarded: 0
-  jumpKey: 106
-  actionKey: 107
-  runLeftSprite: {fileID: 21300000, guid: 4a9750a3062684fd69a96260d967b18c, type: 3}
-  runRightSprite: {fileID: 21300000, guid: 8e1b3baffb7564dbcbb0f70db3cd5940, type: 3}
-  upClingLeftSprite: {fileID: 21300000, guid: 39c73dc778f5b4ab6ada8a68ea18f7aa, type: 3}
-  upClingRightSprite: {fileID: 21300000, guid: 96de03cb0bee44933a17c2abc314a633, type: 3}
-  upLeftClingSprite: {fileID: 21300000, guid: 14fec8b656aef2e40b806b6841770b47, type: 3}
-  upRightClingSprite: {fileID: 21300000, guid: 25a3e8daaa4e3d14d9f0f6e2b608b6bd, type: 3}
-  leftClingSprite: {fileID: 21300000, guid: 080dccd59c6f948988c0bef892fc76ee, type: 3}
-  rightClingSprite: {fileID: 21300000, guid: 5dad08366f18a48c2be63d6b9acf20c8, type: 3}
-  jumpFallLeft: {fileID: 21300000, guid: c33cd14f3f0d04e9b8f14bc4e7ae7088, type: 3}
-  jumpFallRight: {fileID: 21300000, guid: f456c7dc48bf84d2c89d7c0ee3265595, type: 3}
-  crouchLeftSprite: {fileID: 21300000, guid: a5d5a818f44281548884f6542a7b0ec9, type: 3}
-  crouchRightSprite: {fileID: 21300000, guid: 5bfbfad5cce687f44a86f471191b0af4, type: 3}
-  divekickRightSprite: {fileID: 21300000, guid: a0e334da32e805243a1928e39e13c5ad,
-    type: 3}
-  divekickLeftSprite: {fileID: 21300000, guid: aa17709037be4c246a2d27c0abef1ec1, type: 3}
-  slideAttackLeftSprite: {fileID: 21300000, guid: 91c2c14f71c929e45b15ca66b72854b7,
-    type: 3}
-  slideAttackRightSprite: {fileID: 21300000, guid: c77470bd1ccdfe2418fa93b5d6fe34a7,
-    type: 3}
-  guardRightSprite: {fileID: 21300000, guid: 373f2cae1edc72d46ba9a02c96e24472, type: 3}
-  guardLeftSprite: {fileID: 21300000, guid: 0e739cb2ec3acb346bdaf90cd411867e, type: 3}
-  hitbox: {fileID: 21300000, guid: bd93f09b1496b41f9ad8a1c736abbf61, type: 3}
-  dead: 0
-  inUpArea: 0
-  inDownArea: 0
-  inLeftArea: 0
-  inRightArea: 0
 --- !u!212 &212049651659065806
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -674,6 +729,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -718,6 +774,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:

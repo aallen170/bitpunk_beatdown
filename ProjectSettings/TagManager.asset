@@ -34,6 +34,8 @@ TagManager:
   - PlayerScore
   - Quit
   - Pause
+  - P1Projectile
+  - P2Projectile
   layers:
   - Default
   - TransparentFX
