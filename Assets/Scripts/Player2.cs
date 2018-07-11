@@ -288,23 +288,23 @@ public class Player2 : MonoBehaviour {
         {
             inRespawn = true;
             deathSound.Play();
-            p2Score.gameScore++;
-            if (p2Script.inLeftArea)
+            p1Score.gameScore++;
+            if (p1Script.inLeftArea)
             {
                 transform.position = respawnRight.transform.position;
                 dead = false;
             }
-            if (p2Script.inRightArea)
+            if (p1Script.inRightArea)
             {
                 transform.position = respawnLeft.transform.position;
                 dead = false;
             }
-            if (p2Script.inUpArea)
+            if (p1Script.inUpArea)
             {
                 transform.position = respawnDown.transform.position;
                 dead = false;
             }
-            if (p2Script.inDownArea)
+            if (p1Script.inDownArea)
             {
                 transform.position = respawnUp.transform.position;
                 dead = false;
