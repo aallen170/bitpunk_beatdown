@@ -4,6 +4,7 @@ C:/Users/aallen170/Documents/bitpunk_beatdown/bitpunk_beatdown.exe
 SceneListBegin?
 Assets/Scenes/Menu.unity
 Assets/Scenes/StageSelect.unity
+Assets/Scenes/ButtonConfig.unity
 Assets/Scenes/Stage1.unity
 Assets/Scenes/Stage2.unity
 SceneListEnd?
