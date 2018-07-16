@@ -18,7 +18,15 @@ public class Menu : MonoBehaviour {
 
 	bool paused;
 
-	public void MainMenu() {
+    Event keyEvent;
+    Text buttonText;
+    KeyCode newKey;
+
+    bool waitingForKey;
+
+    Transform p1ConfigButtons, p2ConfigButtons;
+
+    public void MainMenu() {
 		SceneManager.LoadScene (0);
 	}
 
@@ -60,10 +68,44 @@ public class Menu : MonoBehaviour {
 			quitCanvas.enabled = false;
 			pauseCanvas.enabled = false;
 		}
-	}
+        p1ConfigButtons = transform.Find("P1Buttons");
+        p2ConfigButtons = transform.Find("P2Buttons");
+        for (int i = 0; i < 5; i++)
+        {
+            if (p1ConfigButtons.GetChild(i).name == "P1UpButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.upKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1DownButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.downKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1LeftButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.leftKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1RightButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.rightKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1JumpButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.jumpKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1AttackButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.attackKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1GuardButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.guardKey.ToString();
+            else if (p1ConfigButtons.GetChild(i).name == "P1ProjectileButton")
+                p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
+                    GameManager.GM.projectileKey.ToString();
+        }
+    }
 
 	public void Update() {
         print("pauseHold = " + pauseHold);
+
+        if (paused)
+            waitingForKey = true;
+        else
+            waitingForKey = false;
 
         if (Input.GetKeyDown("escape") &&
             (sceneIndex == 1 || sceneIndex == 2))
