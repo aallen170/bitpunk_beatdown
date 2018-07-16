@@ -69,7 +69,7 @@ public class Player2 : MonoBehaviour {
     bool descendingSlope;
 
     public KeyCode jumpKey = KeyCode.Keypad1;
-    public KeyCode actionKey = KeyCode.Keypad2;
+    public KeyCode attackKey = KeyCode.Keypad2;
     public KeyCode guardKey = KeyCode.Keypad3;
     public KeyCode projectileKey = KeyCode.Keypad0;
 
@@ -375,7 +375,7 @@ public class Player2 : MonoBehaviour {
             facingRight = false;
         }
 
-        if (Input.GetKeyDown(actionKey) && !controller.collisions.below && !divekicked)
+        if (Input.GetKeyDown(attackKey) && !controller.collisions.below && !divekicked)
             divekicked = true;
 
         if (controller.collisions.below)
@@ -415,7 +415,7 @@ public class Player2 : MonoBehaviour {
 
     void DetectSlideAttack()
     {
-        if (Input.GetKeyDown(actionKey) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
+        if (Input.GetKeyDown(attackKey) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
         {
             slideAttacked = true;
             crouching = false;
@@ -444,7 +444,7 @@ public class Player2 : MonoBehaviour {
 
     void DetectDash()
     {
-        if (moving && Input.GetKeyDown(actionKey) && controller.collisions.below && !dashed && !slideAttacked)
+        if (moving && Input.GetKeyDown(attackKey) && controller.collisions.below && !dashed && !slideAttacked)
         {
             dashed = true;
             if (facingLeft)
@@ -621,7 +621,7 @@ public class Player2 : MonoBehaviour {
                 playerSprite.sprite = jumpFallRight;
         }
 
-        if (clinging && Input.GetKeyDown(actionKey))
+        if (clinging && Input.GetKeyDown(attackKey))
         {
             canPlayClingSound = true;
             if (upRightCling || rightCling)

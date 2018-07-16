@@ -70,7 +70,7 @@ public class Player1 : MonoBehaviour
     bool descendingSlope;
 
     public KeyCode jumpKey = KeyCode.J;
-    public KeyCode actionKey = KeyCode.K;
+    public KeyCode attackKey = KeyCode.K;
     public KeyCode guardKey = KeyCode.L;
     public KeyCode projectileKey = KeyCode.Space;
 
@@ -141,6 +141,8 @@ public class Player1 : MonoBehaviour
 
     PolygonCollider2D p1Hurtbox, p2Hurtbox;
 
+    P1GameManager gm;
+
     void Start()
     {
         controller = GetComponent<Controller2D>();
@@ -195,6 +197,7 @@ public class Player1 : MonoBehaviour
             GetComponent<Projectile>();
         opponentProjectileScript = GameObject.FindGameObjectWithTag("P2Projectile").
             GetComponent<Projectile>();
+        gm = P1GameManager.GM;
     }
 
     void Update()
@@ -312,9 +315,9 @@ public class Player1 : MonoBehaviour
 
     void DetectDirectionalInputs()
     {
-        if (Input.GetKey(KeyCode.A) && !Input.GetKey(KeyCode.D))
+        if (Input.GetKey(gm.left))
             input.x = -1;
-        else if (Input.GetKey(KeyCode.D) && !Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(gm.right))
             input.x = 1;
         else
             input.x = 0;
@@ -324,6 +327,7 @@ public class Player1 : MonoBehaviour
             input.y = 1;
         else
             input.y = 0;
+        print(input.x);
     }
 
     void ColPhysChecks()
@@ -374,7 +378,7 @@ public class Player1 : MonoBehaviour
             facingRight = false;
         }
 
-        if (Input.GetKeyDown(actionKey) && !controller.collisions.below && !divekicked)
+        if (Input.GetKeyDown(attackKey) && !controller.collisions.below && !divekicked)
             divekicked = true;
 
         if (controller.collisions.below)
@@ -414,7 +418,7 @@ public class Player1 : MonoBehaviour
 
     void DetectSlideAttack()
     {
-        if (Input.GetKeyDown(actionKey) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
+        if (Input.GetKeyDown(attackKey) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
         {
             slideAttacked = true;
             crouching = false;
@@ -444,7 +448,7 @@ public class Player1 : MonoBehaviour
     void DetectDash()
     {
         if (moving &&
-            Input.GetKeyDown(actionKey) &&
+            Input.GetKeyDown(attackKey) &&
             controller.collisions.below &&
             !dashed &&
             !slideAttacked)
@@ -613,7 +617,7 @@ public class Player1 : MonoBehaviour
                 playerSprite.sprite = jumpFallRight;
         }
 
-        if (clinging && Input.GetKeyDown(actionKey))
+        if (clinging && Input.GetKeyDown(attackKey))
         {
             canPlayClingSound = true;
             if (upRightCling || rightCling)

@@ -316,6 +316,8 @@
     <Compile Include="Assets\Scripts\FPSDisplay.cs" />
     <Compile Include="Assets\Scripts\Menu.cs" />
     <Compile Include="Assets\Scripts\NewController.cs" />
+    <Compile Include="Assets\Scripts\P1ConfigButtons.cs" />
+    <Compile Include="Assets\Scripts\P1GameManager.cs" />
     <Compile Include="Assets\Scripts\P1Score.cs" />
     <Compile Include="Assets\Scripts\P2Score.cs" />
     <Compile Include="Assets\Scripts\PlatformController.cs" />
