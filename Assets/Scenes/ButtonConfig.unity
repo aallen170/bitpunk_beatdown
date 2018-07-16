@@ -643,6 +643,7 @@ GameObject:
   - component: {fileID: 236453587}
   - component: {fileID: 236453586}
   - component: {fileID: 236453590}
+  - component: {fileID: 236453591}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -738,6 +739,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c92713e2b7ed674488876094a841e578, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &236453591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 236453585}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef3f2cd55e3327c43a3c106883c366f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &238327519
@@ -1461,7 +1473,7 @@ GameObject:
   - component: {fileID: 488391771}
   - component: {fileID: 488391770}
   m_Layer: 0
-  m_Name: P2JumpButton
+  m_Name: P2UpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1716,6 +1728,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 576320374}
+  - component: {fileID: 576320375}
   m_Layer: 0
   m_Name: P1
   m_TagString: Untagged
@@ -1739,6 +1752,17 @@ Transform:
   m_Father: {fileID: 236453589}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &576320375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 576320373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9cc6d4cb8f8ef843b747b410b882c38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &587697621
 GameObject:
   m_ObjectHideFlags: 0
@@ -2563,7 +2587,7 @@ GameObject:
   - component: {fileID: 1061720824}
   - component: {fileID: 1061720823}
   m_Layer: 0
-  m_Name: P1JumpButton
+  m_Name: P1UpButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

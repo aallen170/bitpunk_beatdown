@@ -24,7 +24,8 @@ public class Menu : MonoBehaviour {
 
     bool waitingForKey;
 
-    Transform p1ConfigButtons, p2ConfigButtons;
+    /*Transform p1MenuPanel, p2MenuPanel;
+    Transform p1ConfigButtons, p2ConfigButtons;*/
 
     public void MainMenu() {
 		SceneManager.LoadScene (0);
@@ -68,9 +69,11 @@ public class Menu : MonoBehaviour {
 			quitCanvas.enabled = false;
 			pauseCanvas.enabled = false;
 		}
-        p1ConfigButtons = transform.Find("P1Buttons");
-        p2ConfigButtons = transform.Find("P2Buttons");
-        for (int i = 0; i < 5; i++)
+        /*p1MenuPanel = transform.Find("P1");
+        p1ConfigButtons = p1MenuPanel.Find("P1Buttons");
+        //p2ConfigButtons = transform.Find("P2Buttons");
+        print(p1ConfigButtons);
+        /*for (int i = 0; i < 5; i++)
         {
             if (p1ConfigButtons.GetChild(i).name == "P1UpButton")
                 p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
@@ -96,7 +99,8 @@ public class Menu : MonoBehaviour {
             else if (p1ConfigButtons.GetChild(i).name == "P1ProjectileButton")
                 p1ConfigButtons.GetChild(i).GetComponentInChildren<Text>().text =
                     GameManager.GM.projectileKey.ToString();
-        }
+        }*/
+        //print("test");
     }
 
 	public void Update() {
