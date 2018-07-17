@@ -488,7 +488,7 @@ public class Player1 : MonoBehaviour
 
     void DetectJumping()
     {
-        if (Input.GetKeyDown(jumpKey) && !inPushBack)
+        if (Input.GetKeyDown(gm.jump) && !inPushBack)
         {
             guarded = false;
             if (controller.collisions.below)
@@ -509,7 +509,7 @@ public class Player1 : MonoBehaviour
         if (facingRight && controller.collisions.isAirborne() && !clinging)
             playerSprite.sprite = jumpFallRight;
 
-        if (Input.GetKeyDown(jumpKey) &&
+        if (Input.GetKeyDown(gm.jump) &&
             !controller.collisions.below &&
             !doubleJumped &&
             !clinging)
@@ -580,7 +580,7 @@ public class Player1 : MonoBehaviour
 
         print("cling angle = " + clingAngle);
 
-        if (clinging && Input.GetKeyDown(jumpKey))
+        if (clinging && Input.GetKeyDown(gm.jump))
         {
             divekicked = false;
             canPlayClingSound = true;
@@ -713,7 +713,7 @@ public class Player1 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(jumpKey))
+        if (Input.GetKeyDown(gm.jump))
             guarded = false;
     }
 

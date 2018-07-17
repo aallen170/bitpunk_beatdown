@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class P1GameManager : MonoBehaviour {
 
@@ -15,8 +16,12 @@ public class P1GameManager : MonoBehaviour {
     public KeyCode guard { get; set; }
     public KeyCode projectile { get; set; }
 
+    int sceneIndex;
+
     void Awake()
     {
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
+
         if (GM == null)
         {
             DontDestroyOnLoad(gameObject);
@@ -28,21 +33,21 @@ public class P1GameManager : MonoBehaviour {
         }
 
         up = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("upKey", "W"));
+            PlayerPrefs.GetString("p1UpKey", "W"));
         down = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("downKey", "S"));
+            PlayerPrefs.GetString("p1DownKey", "S"));
         left = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("leftKey", "A"));
+            PlayerPrefs.GetString("p1LeftKey", "A"));
         right = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("rightKey", "D"));
+            PlayerPrefs.GetString("p1RightKey", "D"));
         jump = (KeyCode) System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("jumpKey", "J"));
+            PlayerPrefs.GetString("p1JumpKey", "J"));
         attack = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("attackKey", "K"));
+            PlayerPrefs.GetString("p1AttackKey", "K"));
         guard = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("guardKey", "L"));
+            PlayerPrefs.GetString("p1GuardKey", "L"));
         projectile = (KeyCode)System.Enum.Parse(typeof(KeyCode),
-            PlayerPrefs.GetString("projectileKey", "Space"));
+            PlayerPrefs.GetString("p1ProjectileKey", "Space"));
     }
 
     // Use this for initialization
@@ -52,6 +57,6 @@ public class P1GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+    }
 }
