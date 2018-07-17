@@ -16,4 +16,4 @@
 
 ![projectile + knockback](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/projectile+knockback.png) ![knockback](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/knockback.png)
 
-![projectil 1](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/projectile1.png) ![wallsplat](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/wallsplat.png) ![wallsplat fall](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/wallsplatFall.png) ![wallsplat stun](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/wallsplatStun.png) ![stun + kill](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/stun+kill.png)
+![projectil 1](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/projectile1.png) ![wallsplat](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/wallsplat.png) ![wallsplat fall](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/wallsplatFall.png) ![stun](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/stun.png) ![stun + kill](https://github.com/aallen170/bitpunk_beatdown/blob/master/snaps/stun+kill.png)
