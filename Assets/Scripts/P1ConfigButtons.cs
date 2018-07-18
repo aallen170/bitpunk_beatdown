@@ -21,7 +21,7 @@ public class P1ConfigButtons : MonoBehaviour {
     void Start () {
         sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
-        menuPanel = transform.Find("P1Buttons");
+        menuPanel = transform.Find("Buttons");
         waitingForKey = false;
 
         gm = P1GameManager.GM;
@@ -29,51 +29,43 @@ public class P1ConfigButtons : MonoBehaviour {
         {
             for (int i = 0; i < menuPanel.childCount; i++)
             {
-                if (menuPanel.GetChild(i).name == "P1UpButton")
+                if (menuPanel.GetChild(i).name == "UpButton")
                 {
-                    print("found up");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.up.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1DownButton")
+                else if (menuPanel.GetChild(i).name == "DownButton")
                 {
-                    print("found down");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.down.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1LeftButton")
+                else if (menuPanel.GetChild(i).name == "LeftButton")
                 {
-                    print("found left");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.left.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1RightButton")
+                else if (menuPanel.GetChild(i).name == "RightButton")
                 {
-                    print("found right");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.right.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1JumpButton")
+                else if (menuPanel.GetChild(i).name == "JumpButton")
                 {
-                    print("found jump");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.jump.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1AttackButton")
+                else if (menuPanel.GetChild(i).name == "AttackButton")
                 {
-                    print("found attack");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.attack.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1GuardButton")
+                else if (menuPanel.GetChild(i).name == "GuardButton")
                 {
-                    print("found guard");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.guard.ToString();
                 }
-                else if (menuPanel.GetChild(i).name == "P1ProjectileButton")
+                else if (menuPanel.GetChild(i).name == "ProjectileButton")
                 {
-                    print("found projectile");
                     menuPanel.GetChild(i).GetComponentInChildren<Text>().text =
                         gm.projectile.ToString();
                 }
