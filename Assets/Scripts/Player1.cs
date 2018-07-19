@@ -69,11 +69,6 @@ public class Player1 : MonoBehaviour
     bool climbingSlope;
     bool descendingSlope;
 
-    public KeyCode jumpKey = KeyCode.J;
-    public KeyCode attackKey = KeyCode.K;
-    public KeyCode guardKey = KeyCode.L;
-    public KeyCode projectileKey = KeyCode.Space;
-
     float accelerationTimeGrounded;
     float accelerationTimeAirborne;
 
@@ -321,13 +316,12 @@ public class Player1 : MonoBehaviour
             input.x = 1;
         else
             input.x = 0;
-        if (Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        if (Input.GetKey(gm.down))
             input.y = -1;
-        else if (Input.GetKey(KeyCode.W) && !Input.GetKey(KeyCode.S))
+        else if (Input.GetKey(gm.up))
             input.y = 1;
         else
             input.y = 0;
-        print(input.x);
     }
 
     void ColPhysChecks()
@@ -378,7 +372,7 @@ public class Player1 : MonoBehaviour
             facingRight = false;
         }
 
-        if (Input.GetKeyDown(attackKey) && !controller.collisions.below && !divekicked)
+        if (Input.GetKeyDown(gm.attack) && !controller.collisions.below && !divekicked)
             divekicked = true;
 
         if (controller.collisions.below)
@@ -418,7 +412,7 @@ public class Player1 : MonoBehaviour
 
     void DetectSlideAttack()
     {
-        if (Input.GetKeyDown(attackKey) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
+        if (Input.GetKeyDown(gm.attack) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
         {
             slideAttacked = true;
             crouching = false;
@@ -448,7 +442,7 @@ public class Player1 : MonoBehaviour
     void DetectDash()
     {
         if (moving &&
-            Input.GetKeyDown(attackKey) &&
+            Input.GetKeyDown(gm.attack) &&
             controller.collisions.below &&
             !dashed &&
             !slideAttacked)
@@ -617,7 +611,7 @@ public class Player1 : MonoBehaviour
                 playerSprite.sprite = jumpFallRight;
         }
 
-        if (clinging && Input.GetKeyDown(attackKey))
+        if (clinging && Input.GetKeyDown(gm.attack))
         {
             canPlayClingSound = true;
             if (upRightCling || rightCling)
@@ -676,7 +670,7 @@ public class Player1 : MonoBehaviour
         if (!guarded)
             lockFacing = false;
 
-        if (Input.GetKey(guardKey) &&
+        if (Input.GetKey(gm.guard) &&
             !controller.collisions.isAirborne() &&
             !inRespawn)
             guarded = true;
@@ -719,7 +713,7 @@ public class Player1 : MonoBehaviour
 
     void DetectProjectile()
     {
-        if (Input.GetKeyDown(projectileKey) &&
+        if (Input.GetKeyDown(gm.projectile) &&
             !divekicked &&
             !slideAttacked &&
             !guarded &&

@@ -36,6 +36,8 @@ TagManager:
   - Pause
   - P1Projectile
   - P2Projectile
+  - P1Config
+  - P2Config
   layers:
   - Default
   - TransparentFX
