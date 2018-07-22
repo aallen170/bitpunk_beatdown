@@ -311,6 +311,7 @@
     <Compile Include="Assets\Scripts\ConfigButtons.cs" />
     <Compile Include="Assets\Scripts\Controller2D.cs" />
     <Compile Include="Assets\Scripts\Controller2D_OLD.cs" />
+    <Compile Include="Assets\Scripts\DeathRespawn.cs" />
     <Compile Include="Assets\Scripts\For2dTut\AutoMoveCrate.cs" />
     <Compile Include="Assets\Scripts\For2dTut\PhysicsObject.cs" />
     <Compile Include="Assets\Scripts\For2dTut\PlayerPlatformController.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Assets\Scripts\RB_Player.cs" />
     <Compile Include="Assets\Scripts\TEST_Controller2D.cs" />
     <Compile Include="Assets\Scripts\TEST_Player.cs" />
+    <Compile Include="Assets\Scripts\UpdateScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AdvancedPolygonCollider\Readme.txt" />

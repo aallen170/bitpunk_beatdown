@@ -57,7 +57,7 @@ public class Player1 : MonoBehaviour
     bool movingLeft = false;
     bool movingRight = false;
     bool rotated = false;
-    bool inRespawn = false;
+    [HideInInspector] public bool inRespawn = false;
 
     bool hitOnLeftSide = false;
     bool hitOnRightSide = false;
@@ -111,7 +111,7 @@ public class Player1 : MonoBehaviour
 
     GameObject respawnUp, respawnDown, respawnRight, respawnLeft, opponent;
 
-    BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
+    //BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
 
     [HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
 
@@ -123,7 +123,7 @@ public class Player1 : MonoBehaviour
 
     Projectile playerProjectileScript, opponentProjectileScript;
 
-    AudioSource deathSound, clingSound;
+    [HideInInspector] public AudioSource killSound, clingSound;
 
     bool canPlayClingSound = true;
 
@@ -137,6 +137,8 @@ public class Player1 : MonoBehaviour
     PolygonCollider2D p1Hurtbox, p2Hurtbox;
 
     P1GameManager gm;
+
+    [HideInInspector] public bool invincible = false;
 
     void Start()
     {
@@ -156,14 +158,14 @@ public class Player1 : MonoBehaviour
         {
             opponent = GameObject.FindGameObjectWithTag("Player1");
         }
-        activeAreaUp = GameObject.FindGameObjectWithTag("ActiveAreaUp").
+        /*activeAreaUp = GameObject.FindGameObjectWithTag("ActiveAreaUp").
             GetComponent<BoxCollider2D>();
         activeAreaDown = GameObject.FindGameObjectWithTag("ActiveAreaDown").
             GetComponent<BoxCollider2D>();
         activeAreaLeft = GameObject.FindGameObjectWithTag("ActiveAreaLeft").
             GetComponent<BoxCollider2D>();
         activeAreaRight = GameObject.FindGameObjectWithTag("ActiveAreaRight").
-            GetComponent<BoxCollider2D>();
+            GetComponent<BoxCollider2D>();*/
         p1Script = GameObject.FindGameObjectWithTag("Player1").
             GetComponent<Player1>();
         p2Script = GameObject.FindGameObjectWithTag("Player2").
@@ -182,7 +184,7 @@ public class Player1 : MonoBehaviour
         p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
             GetComponent<Canvas>();
         p1WinCanvas.enabled = p2WinCanvas.enabled = false;
-        deathSound = GetComponents<AudioSource>()[0];
+        killSound = GetComponents<AudioSource>()[0];
         clingSound = GetComponents<AudioSource>()[1];
         p1Hurtbox = GameObject.FindGameObjectWithTag("Player1").
             GetComponent<PolygonCollider2D>();
@@ -197,11 +199,9 @@ public class Player1 : MonoBehaviour
 
     void Update()
     {
-        UpdateScore();
+        //CheckActiveArea();
 
-        CheckActiveArea();
-
-        DetectDeath();
+        //DetectDeath();
 
         DetectDirectionalInputs();
 
@@ -235,7 +235,7 @@ public class Player1 : MonoBehaviour
             print("guarding");
     }
 
-    void UpdateScore()
+    /*void UpdateScore()
     {
         if (p1Score.gameScore == 5)
         {
@@ -252,9 +252,9 @@ public class Player1 : MonoBehaviour
             Destroy(opponent);
         if (p2Win && gameObject.tag == "Player2")
             Destroy(opponent);
-    }
+    }*/
 
-    void CheckActiveArea()
+    /*void CheckActiveArea()
     {
         if (boxCollider.bounds.center.x < activeAreaLeft.bounds.max.x && boxCollider.bounds.center.y < activeAreaLeft.bounds.max.y)
         {
@@ -276,14 +276,14 @@ public class Player1 : MonoBehaviour
             inUpArea = true;
             inLeftArea = inDownArea = inRightArea = false;
         }
-    }
+    }*/
 
-    void DetectDeath()
+    /*void DetectDeath()
     {
         if (dead)
         {
             inRespawn = true;
-            deathSound.Play();
+            killSound.Play();
             p2Score.gameScore++;
             if (p2Script.inLeftArea)
             {
@@ -306,7 +306,7 @@ public class Player1 : MonoBehaviour
                 dead = false;
             }
         }
-    }
+    }*/
 
     void DetectDirectionalInputs()
     {
@@ -1047,6 +1047,13 @@ public class Player1 : MonoBehaviour
         {
             splattedLeft = false;
             splattedRight = false;
+        }
+
+        if (dead)
+        {
+            velocity.x = 0;
+            velocity.y = 0;
+            controller.Move(velocity * Time.deltaTime);
         }
     }
 

@@ -57,8 +57,8 @@ public class PlayerKill : MonoBehaviour {
 		if (playerCollider.bounds.max.x > opponentCollider.bounds.min.x && playerCollider.bounds.min.x < opponentCollider.bounds.max.x && playerCollider.bounds.max.y > opponentCollider.bounds.min.y && playerCollider.bounds.min.y < opponentCollider.bounds.max.y) {
 			print ("inside");
 			if (gameObject.tag == "Player1") {
-				if (((divekicking || slideAttacking) && !p2Script.guarded) ||
-                    slideAttacking) {
+				if ((((divekicking || slideAttacking) && !p2Script.guarded) ||
+                    slideAttacking) && !p2Script.invincible) {
 					print ("p2 killed");
 					p2Script.dead = true;
 				} else if (divekicking && p2Script.guarded) {
@@ -67,8 +67,8 @@ public class PlayerKill : MonoBehaviour {
 				}
 			}
 			if (gameObject.tag == "Player2") {
-				if (((divekicking || slideAttacking) && !p2Script.guarded) ||
-                    slideAttacking)
+				if ((((divekicking || slideAttacking) && !p1Script.guarded) ||
+                    slideAttacking) && !p1Script.invincible)
                 {
 					print ("p2 killed");
 					p1Script.dead = true;

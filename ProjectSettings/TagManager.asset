@@ -38,6 +38,7 @@ TagManager:
   - P2Projectile
   - P1Config
   - P2Config
+  - P1Respawn
   layers:
   - Default
   - TransparentFX

@@ -122,20 +122,20 @@ public class Player2 : MonoBehaviour {
 
     Projectile playerProjectileScript, opponentProjectileScript;
 
-    AudioSource deathSound, clingSound;
+    [HideInInspector] public AudioSource killSound, clingSound;
 
     bool canPlayClingSound = true;
 
     public static bool p1Win = false;
     public static bool p2Win = false;
 
-    Canvas p1WinCanvas, p2WinCanvas;
-
     bool lockFacing = false;
 
     PolygonCollider2D p1Hurtbox, p2Hurtbox;
 
     P2GameManager gm;
+
+    [HideInInspector] public bool invincible = false;
 
     void Start()
     {
@@ -169,19 +169,9 @@ public class Player2 : MonoBehaviour {
             GetComponent<Player2>();
         opponentSprite = opponent.GetComponent<SpriteRenderer>();
         opponentIcon = opponent.GetComponentInChildren<SpriteRenderer>();
-        p1Score = GameObject.FindGameObjectWithTag("P1Score").
-            GetComponent<P1Score>();
-        p2Score = GameObject.FindGameObjectWithTag("P2Score").
-            GetComponent<P2Score>();
-        p1Win = p2Win = false;
         opponentSprite.enabled = true;
         opponentIcon.enabled = true;
-        p1WinCanvas = GameObject.FindGameObjectWithTag("P1Win").
-            GetComponent<Canvas>();
-        p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
-            GetComponent<Canvas>();
-        p1WinCanvas.enabled = p2WinCanvas.enabled = false;
-        deathSound = GetComponents<AudioSource>()[0];
+        killSound = GetComponents<AudioSource>()[0];
         clingSound = GetComponents<AudioSource>()[1];
         p1Hurtbox = GameObject.FindGameObjectWithTag("Player1").
             GetComponent<PolygonCollider2D>();
@@ -196,9 +186,6 @@ public class Player2 : MonoBehaviour {
 
     void Update()
     {
-
-        UpdateScore();
-
         CheckActiveArea();
 
         DetectDeath();
@@ -237,25 +224,6 @@ public class Player2 : MonoBehaviour {
             print("p2 in push back");
     }
 
-    void UpdateScore()
-    {
-        if (p1Score.gameScore == 5)
-        {
-            p1Win = true;
-            p1WinCanvas.enabled = true;
-        }
-        if (p2Score.gameScore == 5)
-        {
-            p2Win = true;
-            p2WinCanvas.enabled = true;
-        }
-
-        if (p1Win && gameObject.tag == "Player1")
-            Destroy(opponent);
-        if (p2Win && gameObject.tag == "Player2")
-            Destroy(opponent);
-    }
-
     void CheckActiveArea()
     {
         if (boxCollider.bounds.center.x < activeAreaLeft.bounds.max.x && boxCollider.bounds.center.y < activeAreaLeft.bounds.max.y)
@@ -285,7 +253,7 @@ public class Player2 : MonoBehaviour {
         if (dead)
         {
             inRespawn = true;
-            deathSound.Play();
+            killSound.Play();
             p1Score.gameScore++;
             if (p1Script.inLeftArea)
             {
