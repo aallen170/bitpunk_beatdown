@@ -56,7 +56,7 @@ public class Player2 : MonoBehaviour {
     bool movingLeft = false;
     bool movingRight = false;
     bool rotated = false;
-    bool inRespawn = false;
+    [HideInInspector] public bool inRespawn = false;
 
     bool hitOnLeftSide = false;
     bool hitOnRightSide = false;
@@ -169,6 +169,10 @@ public class Player2 : MonoBehaviour {
             GetComponent<Player2>();
         opponentSprite = opponent.GetComponent<SpriteRenderer>();
         opponentIcon = opponent.GetComponentInChildren<SpriteRenderer>();
+        p1Score = GameObject.FindGameObjectWithTag("P1Score").
+            GetComponent<P1Score>();
+        p2Score = GameObject.FindGameObjectWithTag("P2Score").
+            GetComponent<P2Score>();
         opponentSprite.enabled = true;
         opponentIcon.enabled = true;
         killSound = GetComponents<AudioSource>()[0];
@@ -252,6 +256,7 @@ public class Player2 : MonoBehaviour {
     {
         if (dead)
         {
+            print("p2dead");
             inRespawn = true;
             killSound.Play();
             p1Score.gameScore++;
@@ -262,6 +267,7 @@ public class Player2 : MonoBehaviour {
             }
             if (p1Script.inRightArea)
             {
+                print("in right area");
                 transform.position = respawnLeft.transform.position;
                 dead = false;
             }
@@ -275,6 +281,7 @@ public class Player2 : MonoBehaviour {
                 transform.position = respawnUp.transform.position;
                 dead = false;
             }
+            dead = false;
         }
     }
 

@@ -111,7 +111,7 @@ public class Player1 : MonoBehaviour
 
     GameObject respawnUp, respawnDown, respawnRight, respawnLeft, opponent;
 
-    //BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
+    BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
 
     [HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
 
@@ -158,14 +158,14 @@ public class Player1 : MonoBehaviour
         {
             opponent = GameObject.FindGameObjectWithTag("Player1");
         }
-        /*activeAreaUp = GameObject.FindGameObjectWithTag("ActiveAreaUp").
+        activeAreaUp = GameObject.FindGameObjectWithTag("ActiveAreaUp").
             GetComponent<BoxCollider2D>();
         activeAreaDown = GameObject.FindGameObjectWithTag("ActiveAreaDown").
             GetComponent<BoxCollider2D>();
         activeAreaLeft = GameObject.FindGameObjectWithTag("ActiveAreaLeft").
             GetComponent<BoxCollider2D>();
         activeAreaRight = GameObject.FindGameObjectWithTag("ActiveAreaRight").
-            GetComponent<BoxCollider2D>();*/
+            GetComponent<BoxCollider2D>();
         p1Script = GameObject.FindGameObjectWithTag("Player1").
             GetComponent<Player1>();
         p2Script = GameObject.FindGameObjectWithTag("Player2").
@@ -199,7 +199,7 @@ public class Player1 : MonoBehaviour
 
     void Update()
     {
-        //CheckActiveArea();
+        CheckActiveArea();
 
         //DetectDeath();
 
@@ -235,7 +235,7 @@ public class Player1 : MonoBehaviour
             print("guarding");
     }
 
-    /*void UpdateScore()
+    void UpdateScore()
     {
         if (p1Score.gameScore == 5)
         {
@@ -252,9 +252,9 @@ public class Player1 : MonoBehaviour
             Destroy(opponent);
         if (p2Win && gameObject.tag == "Player2")
             Destroy(opponent);
-    }*/
+    }
 
-    /*void CheckActiveArea()
+    void CheckActiveArea()
     {
         if (boxCollider.bounds.center.x < activeAreaLeft.bounds.max.x && boxCollider.bounds.center.y < activeAreaLeft.bounds.max.y)
         {
@@ -276,9 +276,9 @@ public class Player1 : MonoBehaviour
             inUpArea = true;
             inLeftArea = inDownArea = inRightArea = false;
         }
-    }*/
+    }
 
-    /*void DetectDeath()
+    void DetectDeath()
     {
         if (dead)
         {
@@ -306,7 +306,7 @@ public class Player1 : MonoBehaviour
                 dead = false;
             }
         }
-    }*/
+    }
 
     void DetectDirectionalInputs()
     {
@@ -677,9 +677,9 @@ public class Player1 : MonoBehaviour
         else
             guarded = false;
 
-        if (inRespawn &&
+        /*if (inRespawn &&
             controller.collisions.isAirborne())
-            inRespawn = false;
+            inRespawn = false;*/
 
         if (guarded && controller.collisions.isAirborne())
             print("p1 guarding in air");

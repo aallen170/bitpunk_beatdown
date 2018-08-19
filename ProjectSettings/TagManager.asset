@@ -39,6 +39,7 @@ TagManager:
   - P1Config
   - P2Config
   - P1Respawn
+  - P2Respawn
   layers:
   - Default
   - TransparentFX
