@@ -10,19 +10,16 @@ public class DeathRespawn : MonoBehaviour {
     P1Score p1Score;
     P2Score p2Score;
 
-    SpriteRenderer sprite;
-    Color color;
+    SpriteRenderer p1Sprite, p2Sprite;
+    Color p1Color, p2Color;
 
-    Transform trans, respawn;
+    Transform p1Trans, p1Respawn, p2Trans, p2Respawn;
 
-    bool alphaUp = false;
-    bool alphaDown = false;
-    bool incrementScore = true;
+    bool p1AlphaUp = false, p1AlphaDown = false, p1IncrementScore = true, p1Sounded = false;
+    bool p2AlphaUp = false, p2AlphaDown = false, p2IncrementScore = true, p2Sounded = false;
 
-    int respawnLength = 60;
-    int respawnCount = 0;
-    int deathLength = 60;
-    int deathCount = 0;
+    int p1RespawnLength = 60, p1RespawnCount = 0, p1DeathLength = 60, p1DeathCount = 0;
+    int p2RespawnLength = 60, p2RespawnCount = 0, p2DeathLength = 60, p2DeathCount = 0;
 
     // Use this for initialization
     void Start () {
@@ -30,17 +27,24 @@ public class DeathRespawn : MonoBehaviour {
             GetComponent<Player1>();
         p2Script = GameObject.FindGameObjectWithTag("Player2").
             GetComponent<Player2>();
-        trans = GameObject.FindGameObjectWithTag("Player1").
+        p1Trans = GameObject.FindGameObjectWithTag("Player1").
             GetComponent<Transform>();
-        respawn = GameObject.FindGameObjectWithTag("P1Respawn").
+        p2Trans = GameObject.FindGameObjectWithTag("Player2").
             GetComponent<Transform>();
-        sprite = GameObject.FindGameObjectWithTag("Player1").
+        p1Respawn = GameObject.FindGameObjectWithTag("P1Respawn").
+            GetComponent<Transform>();
+        p2Respawn = GameObject.FindGameObjectWithTag("P2Respawn").
+            GetComponent<Transform>();
+        p1Sprite = GameObject.FindGameObjectWithTag("Player1").
+            GetComponent<SpriteRenderer>();
+        p2Sprite = GameObject.FindGameObjectWithTag("Player2").
             GetComponent<SpriteRenderer>();
         p1Score = GameObject.FindGameObjectWithTag("P1Score").
             GetComponent<P1Score>();
         p2Score = GameObject.FindGameObjectWithTag("P2Score").
             GetComponent<P2Score>();
-        color = sprite.color;
+        p1Color = p1Sprite.color;
+        p2Color = p2Sprite.color;
     }
 	
 	// Update is called once per frame
@@ -49,107 +53,43 @@ public class DeathRespawn : MonoBehaviour {
         {
             print("p1 dead");
             p1Script.invincible = true;
-            sprite.enabled = false;
-            p2Script.killSound.Play();
-            if (incrementScore)
+            p1Sprite.enabled = false;
+            if (!p1Sounded)
+            {
+                p2Script.killSound.Play();
+                p1Sounded = true;
+            }
+            if (p1IncrementScore)
             {
                 p2Score.gameScore++;
-                incrementScore = false;
+                p1IncrementScore = false;
             }
-            deathCount++;
-            if (deathCount > deathLength)
+            p1DeathCount++;
+            if (p1DeathCount > p1DeathLength)
             {
-                sprite.enabled = true;
+                p1Sprite.enabled = true;
                 p1Script.inRespawn = true;
-                deathCount = 0;
+                p1DeathCount = 0;
             }
         }
         if(p1Script.inRespawn && p1Script.dead)
         {
-            trans.position = respawn.position;
+            p1Trans.position = p1Respawn.position;
             p1Script.dead = false;
         }
         if(p1Script.inRespawn && !p1Script.dead)
         {
-            respawnCount++;
-            if(respawnCount > respawnLength)
-            {
-                print("resetting respawn");
-                p1Script.inRespawn = false;
-                p1Script.invincible = false;
-                color.a = 1f;
-                sprite.color = color;
-                respawnCount = 0;
-                incrementScore = true;
-            }
-        }
-        if (p1Script.invincible)
-        {
-            if (color.a == 1)
-            {
-                color.a = 0.8f;
-                sprite.color = color;
-            }
-            if (color.a > 0.7f)
-            {
-                alphaUp = false;
-                alphaDown = true;
-            }
-            if (color.a < 0.3f)
-            {
-                alphaDown = false;
-                alphaUp = true;
-            }
-            if (alphaUp)
-            {
-                color.a = color.a + 0.1f;
-                sprite.color = color;
-            }
-            if (alphaDown)
-            {
-                color.a = color.a - 0.1f;
-                sprite.color = color;
-            }
-        }
-
-        /*if (p2Script.dead)
-        {
-            print("p1 dead");
-            p2Script.invincible = true;
-            p2Sprite.enabled = false;
-            p1Script.killSound.Play();
-            if (p1IncrementScore)
-            {
-                p1Score.gameScore++;
-                p1IncrementScore = false;
-            }
-            p2DeathCount++;
-            if (p2DeathCount > p2DeathLength)
-            {
-                p2Sprite.enabled = true;
-                p2Script.inRespawn = true;
-                p2DeathCount = 0;
-            }
-        }
-        if (p2Script.inRespawn && p2Script.dead)
-        {
-            p2Trans.position = p2Respawn.position;
-            p2Script.dead = false;
-        }
-        if (p2Script.inRespawn)
-            print("in respawn");
-        if (p1Script.inRespawn && !p1Script.dead)
-        {
             p1RespawnCount++;
-            if (p1RespawnCount > p1RespawnLength)
+            if(p1RespawnCount > p1RespawnLength)
             {
-                print("resetting respawn");
+                print("p1 resetting respawn");
                 p1Script.inRespawn = false;
                 p1Script.invincible = false;
                 p1Color.a = 1f;
                 p1Sprite.color = p1Color;
                 p1RespawnCount = 0;
                 p1IncrementScore = true;
+                p1Sounded = false;
             }
         }
         if (p1Script.invincible)
@@ -161,24 +101,101 @@ public class DeathRespawn : MonoBehaviour {
             }
             if (p1Color.a > 0.7f)
             {
-                alphaUp = false;
-                alphaDown = true;
+                p1AlphaUp = false;
+                p1AlphaDown = true;
             }
             if (p1Color.a < 0.3f)
             {
-                alphaDown = false;
-                alphaUp = true;
+                p1AlphaDown = false;
+                p1AlphaUp = true;
             }
-            if (alphaUp)
+            if (p1AlphaUp)
             {
                 p1Color.a = p1Color.a + 0.1f;
                 p1Sprite.color = p1Color;
             }
-            if (alphaDown)
+            if (p1AlphaDown)
             {
                 p1Color.a = p1Color.a - 0.1f;
                 p1Sprite.color = p1Color;
             }
-        }*/
+        }
+
+        if (p2Script.dead)
+        {
+            print("p2 dead");
+            p2Script.invincible = true;
+            p2Sprite.enabled = false;
+            if (!p2Sounded)
+            {
+                p2Script.killSound.Play();
+                p2Sounded = true;
+            }
+            if (p2IncrementScore)
+            {
+                p2Score.gameScore++;
+                p2IncrementScore = false;
+            }
+            p2DeathCount++;
+            if (p2DeathCount > p2DeathLength)
+            {
+                p2Sprite.enabled = true;
+                p2Script.inRespawn = true;
+                p2DeathCount = 0;
+            }
+        }
+        if (p2Script.inRespawn)
+            print("p2 in respawn");
+        if (!p2Script.inRespawn)
+            print("p2 not in respawn");
+        if (p2Script.inRespawn && p2Script.dead)
+        {
+            p2Trans.position = p2Respawn.position;
+            p2Script.dead = false;
+        }
+        if (p2Script.inRespawn && !p2Script.dead)
+        {
+            p2RespawnCount++;
+            print("p2 respawning");
+            if (p2RespawnCount > p2RespawnLength)
+            {
+                print("p2 resetting respawn");
+                p2Script.inRespawn = false;
+                p2Script.invincible = false;
+                p2Color.a = 1f;
+                p2Sprite.color = p2Color;
+                p2RespawnCount = 0;
+                p2IncrementScore = true;
+                p2Sounded = false;
+            }
+        }
+        if (p2Script.invincible)
+        {
+            if (p2Color.a == 1)
+            {
+                p2Color.a = 0.8f;
+                p2Sprite.color = p2Color;
+            }
+            if (p2Color.a > 0.7f)
+            {
+                p2AlphaUp = false;
+                p2AlphaDown = true;
+            }
+            if (p2Color.a < 0.3f)
+            {
+                p2AlphaDown = false;
+                p2AlphaUp = true;
+            }
+            if (p2AlphaUp)
+            {
+                p2Color.a = p2Color.a + 0.1f;
+                p2Sprite.color = p2Color;
+            }
+            if (p2AlphaDown)
+            {
+                p2Color.a = p2Color.a - 0.1f;
+                p2Sprite.color = p2Color;
+            }
+        }
     }
 }

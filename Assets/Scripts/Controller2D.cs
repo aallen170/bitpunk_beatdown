@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * The following is a modification of code from Sebastian Lague
+ * 
+ * The code was constructed as a result of following his tutorial here: https://www.youtube.com/watch?v=MbWK8bCAU2w
+ */
 public class Controller2D : RaycastController {
 
 	float maxClimbAngle = 80;

@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * The following is a modification of code from Mark Philip of Studica
+ *
+ * Original code can be found in this video tutorial: https://www.youtube.com/watch?v=iSxifRKQKAA
+ */
 public class P2GameManager : MonoBehaviour {
 
     public static P2GameManager GM;

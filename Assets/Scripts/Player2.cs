@@ -192,7 +192,7 @@ public class Player2 : MonoBehaviour {
     {
         CheckActiveArea();
 
-        DetectDeath();
+        //DetectDeath();
 
         DetectDirectionalInputs();
 
@@ -660,9 +660,9 @@ public class Player2 : MonoBehaviour {
         else
             guarded = false;
 
-        if (inRespawn &&
+        /*if (inRespawn &&
             controller.collisions.isAirborne())
-            inRespawn = false;
+            inRespawn = false;*/
 
         if (guarded && controller.collisions.isAirborne())
             print("p1 guarding in air");

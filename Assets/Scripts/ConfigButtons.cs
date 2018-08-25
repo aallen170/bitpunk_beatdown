@@ -4,13 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/*
+ * The following is a modification of code from Mark Philip of Studica
+ *
+ * Original code can be found in this video tutorial: https://www.youtube.com/watch?v=iSxifRKQKAA
+ */
 public class ConfigButtons : MonoBehaviour {
 
     Transform p1Config, p2Config;
     Event keyEvent;
     Text buttonText;
     KeyCode newKey;
+    string buttonName;
 
+    bool waitingForStick;
     bool waitingForKey;
 
     P1GameManager p1GM;
@@ -130,6 +137,8 @@ public class ConfigButtons : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //print(Input.GetAxis("J_Horizontal"));
+        //print(Input.GetButton("FaceButton1"));
         /*if (Input.GetButton("joystick button 2"))
             print("pressing a");*/
 
@@ -137,6 +146,18 @@ public class ConfigButtons : MonoBehaviour {
             menuPanel.gameObject.SetActive(true);
         else
             menuPanel.gameObject.SetActive(false);*/
+        //int i = 0;
+        //while (i < 4)
+        //{
+        //    if (Mathf.Abs(Input.GetAxis("Joy" + i + "X")) > 0.2F || Mathf.Abs(Input.GetAxis("Joy" + i + "Y")) > 0.2F)
+        //        Debug.Log(Input.GetJoystickNames()[i] + " is moved");
+        //    i++;
+        //}
+
+        for (int i = 0; i < Input.GetJoystickNames().Length; i++)
+        {
+            print(Input.GetJoystickNames()[i]);
+        }
     }
 
     void OnGUI()
@@ -148,11 +169,6 @@ public class ConfigButtons : MonoBehaviour {
             newKey = keyEvent.keyCode;
             waitingForKey = false;
         }
-        /*if (Input.anyKey && !keyEvent.isMouse && waitingForKey)
-        {
-            newKey = keyEvent.keyCode;
-            waitingForKey = false;
-        }*/
     }
 
     public void StartAssignment(string keyName)
@@ -170,8 +186,13 @@ public class ConfigButtons : MonoBehaviour {
     {
         while (!keyEvent.isKey)
             yield return null;
-        /*while (!Input.anyKey)
-            yield return null;*/
+    }
+
+    public IEnumerator AssignStick(string stickName)
+    {
+        waitingForStick = true;
+
+        yield return null;
     }
 
     public IEnumerator AssignKey(string keyName)

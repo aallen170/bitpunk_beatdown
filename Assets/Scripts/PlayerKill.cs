@@ -70,10 +70,10 @@ public class PlayerKill : MonoBehaviour {
 				if ((((divekicking || slideAttacking) && !p1Script.guarded) ||
                     slideAttacking) && !p1Script.invincible)
                 {
-					print ("p2 killed");
+					print ("p1 killed");
 					p1Script.dead = true;
 				} else if (divekicking && p1Script.guarded) {
-					print ("p2 guarded");
+					print ("p1 guarded");
 					p2Script.dead = true;
 				}
 			}
