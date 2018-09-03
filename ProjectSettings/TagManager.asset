@@ -36,6 +36,10 @@ TagManager:
   - Pause
   - P1Projectile
   - P2Projectile
+  - P1Config
+  - P2Config
+  - P1Respawn
+  - P2Respawn
   layers:
   - Default
   - TransparentFX
