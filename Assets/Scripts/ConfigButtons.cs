@@ -184,8 +184,14 @@ public class ConfigButtons : MonoBehaviour {
 
     IEnumerator WaitForKey()
     {
+        print("waiting for key");
         while (!keyEvent.isKey)
+        {
+            Input.GetButton("FaceButton1");
             yield return null;
+        }
+
+        
     }
 
     public IEnumerator AssignStick(string stickName)

@@ -22,6 +22,8 @@ public class Menu : MonoBehaviour {
     Text buttonText;
     KeyCode newKey;
 
+    public static bool freeze = false;
+
     bool waitingForKey;
 
     /*Transform p1MenuPanel, p2MenuPanel;
@@ -61,6 +63,16 @@ public class Menu : MonoBehaviour {
 		quitCanvas.enabled = false;
 	}
 
+    public void Freeze()
+    {
+        freeze = true;
+    }
+
+    public void UnFreeze()
+    {
+        freeze = false;
+    }
+
 	public void Start() {
 		sceneIndex = SceneManager.GetActiveScene ().buildIndex;
 		if (sceneIndex != 2 && sceneIndex != 1 && sceneIndex != 0) {
@@ -69,6 +81,7 @@ public class Menu : MonoBehaviour {
 			quitCanvas.enabled = false;
 			pauseCanvas.enabled = false;
 		}
+        #region depreciated
         /*p1MenuPanel = transform.Find("P1");
         p1ConfigButtons = p1MenuPanel.Find("P1Buttons");
         //p2ConfigButtons = transform.Find("P2Buttons");
@@ -101,6 +114,7 @@ public class Menu : MonoBehaviour {
                     GameManager.GM.projectileKey.ToString();
         }*/
         //print("test");
+        #endregion depreciated
     }
 
 	public void Update() {

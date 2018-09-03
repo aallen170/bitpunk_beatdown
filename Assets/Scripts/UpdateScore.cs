@@ -18,26 +18,26 @@ public class UpdateScore : MonoBehaviour {
             GetComponent<P1Score>();
         p2Score = GameObject.FindGameObjectWithTag("P2Score").
             GetComponent<P2Score>();
-        p1WinCanvas = GameObject.FindGameObjectWithTag("P1Win").
-            GetComponent<Canvas>();
-        p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
-            GetComponent<Canvas>();
-        p1WinCanvas.enabled = p2WinCanvas.enabled = false;
+        //p1WinCanvas = GameObject.FindGameObjectWithTag("P1Win").
+        //    GetComponent<Canvas>();
+        //p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
+        //    GetComponent<Canvas>();
+        //p1WinCanvas.enabled = p2WinCanvas.enabled = false;
         print(p1Object);
         print(p2Object);
     }
 
     private void Update()
     {
-        if (p1Score.gameScore == 5)
-        {
-            p1WinCanvas.enabled = true;
-            Destroy(p2Object);
-        }
-        if (p2Score.gameScore == 5)
-        {
-            p2WinCanvas.enabled = true;
-            Destroy(p1Object);
-        }
+        //if (p1Score.gameScore == 5)
+        //{
+        //    p1WinCanvas.enabled = true;
+        //    Destroy(p2Object);
+        //}
+        //if (p2Score.gameScore == 5)
+        //{
+        //    p2WinCanvas.enabled = true;
+        //    Destroy(p1Object);
+        //}
     }
 }

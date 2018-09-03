@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using Rewired;
 
 [RequireComponent (typeof (Controller2D))]
 
 public class Player2 : MonoBehaviour {
 
+    #region Variables
+    #region Inspector_Values
     [Range(1, 50)] public float moveSpeed = 20;
     [Range(1, 100)] public float jumpPower = 50;
     [Range(1, 300)] public float fallSpeed = 100;
@@ -25,7 +29,9 @@ public class Player2 : MonoBehaviour {
     [Range(1, 100)] public float pushBackSpeed = 50;
     [Range(1, 100)] public float pushBackActiveFrames = 10;
     [Range(1, 100)] public float stunActiveFrames = 60;
+    #endregion Inspector_Values
 
+    #region Frame_Counts
     float dashFrameCount = 0;
     float clingFrameCount = 0;
     float slideAttackFrameCount = 0;
@@ -33,7 +39,9 @@ public class Player2 : MonoBehaviour {
     float guardFrameCount = 0;
     float pushBackFrameCount = 0;
     float stunFrameCount = 0;
+    #endregion Frame_Counts
 
+    #region Player_States
     bool doubleJumped = false;
     [HideInInspector] public bool divekicked = false;
     [HideInInspector] public bool slideAttacked = false;
@@ -67,7 +75,19 @@ public class Player2 : MonoBehaviour {
     bool grounded;
     bool climbingSlope;
     bool descendingSlope;
+    bool clinging = false;
+    [HideInInspector] public bool dead = false;
 
+    bool lockFacing = false;
+
+    [HideInInspector] public bool invincible = false;
+
+    bool inPractice = false;
+
+    bool jumped = false;
+    #endregion Player_States
+
+    #region Physics
     float accelerationTimeGrounded;
     float accelerationTimeAirborne;
 
@@ -77,26 +97,29 @@ public class Player2 : MonoBehaviour {
     float velocityXSmoothing;
 
     Vector3 velocity;
+    Vector3 standingPos;
+    #endregion Physics
 
+    #region Input
+    Vector2 input;
     Controller2D controller;
+    P2GameManager gm;
+    #endregion Input
 
+    #region Sprites
     SpriteRenderer playerSprite;
     SpriteRenderer playerIcon;
     SpriteRenderer opponentSprite;
     SpriteRenderer opponentIcon;
-
-    Vector3 standingPos;
-
-    Vector2 input;
-
-    bool clinging = false;
 
     public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
     upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
     crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeftSprite, slideAttackRightSprite,
     guardRightSprite, guardLeftSprite, pushBackLeftSprite, pushBackRightSprite, wallSplatLeftSprite,
         wallSplatRightSprite, stunnedLeftSprite, stunnedRightSprite, dashLeftSprite, dashRightSprite;
+    #endregion Sprites
 
+    #region Collisions
     Collider2D collidedObject;
 
     [HideInInspector] public BoxCollider2D boxCollider;
@@ -106,14 +129,18 @@ public class Player2 : MonoBehaviour {
 
     bool leftCollision, rightCollision, bottomCollision, topCollision;
 
-    [HideInInspector] public bool dead = false;
+    PolygonCollider2D p1Hurtbox, p2Hurtbox;
+    #endregion Collisions
 
+    #region Respawn
     GameObject respawnUp, respawnDown, respawnRight, respawnLeft, opponent;
 
     BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
 
     [HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
+    #endregion Respawn
 
+    #region External_Scripts
     Player1 p1Script;
     Player2 p2Script;
 
@@ -121,21 +148,27 @@ public class Player2 : MonoBehaviour {
     P2Score p2Score;
 
     Projectile playerProjectileScript, opponentProjectileScript;
+    #endregion External_Scripts
 
+    #region Audio
     [HideInInspector] public AudioSource killSound, clingSound;
 
     bool canPlayClingSound = true;
+    #endregion Audio
 
+    #region Win
     public static bool p1Win = false;
     public static bool p2Win = false;
 
-    bool lockFacing = false;
+    Canvas p1WinCanvas, p2WinCanvas;
+    #endregion Win
 
-    PolygonCollider2D p1Hurtbox, p2Hurtbox;
+    #region Scene
+    int sceneIndex;
+    #endregion
 
-    P2GameManager gm;
-
-    [HideInInspector] public bool invincible = false;
+    Player player;
+    #endregion Variables
 
     void Start()
     {
@@ -186,15 +219,24 @@ public class Player2 : MonoBehaviour {
         opponentProjectileScript = GameObject.FindGameObjectWithTag("P1Projectile").
             GetComponent<Projectile>();
         gm = P2GameManager.GM;
+        sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        if (sceneIndex == 5)
+            inPractice = true;
+        player = ReInput.players.GetPlayer(1);
     }
 
     void Update()
     {
+        if (inPractice)
+            RandomInputs();
+
+        if (inPractice)
+            print("in practice");
+
         CheckActiveArea();
 
-        //DetectDeath();
-
-        DetectDirectionalInputs();
+        if (!inPractice)
+            DetectDirectionalInputs();
 
         ColPhysChecks();
 
@@ -226,6 +268,59 @@ public class Player2 : MonoBehaviour {
             print("p2 guarding");
         if (inPushBack)
             print("p2 in push back");
+    }
+
+    void RandomInputs()
+    {
+        bool change = false;
+        float num = Random.value;
+        float changeNum = Random.value;
+
+        float leftChance, rightChance, jumpChance;
+        jumpChance = 0.3f;
+
+        if (changeNum >= 0.9)
+            change = true;
+
+        if (inRightArea)
+        {
+            leftChance = 0.8f;
+            if (num <= leftChance)
+            {
+                if (change)
+                    input.x = -1;
+            }
+            else
+            {
+                if (change)
+                    input.x = 1;
+            }
+        }
+
+        if (inLeftArea)
+        {
+            rightChance = 0.8f;
+            if (num <= rightChance)
+            {
+                if (change)
+                    input.x = 1;
+            }
+            else
+            {
+                if (change)
+                    input.x = -1;
+            }
+        }
+
+        if (num <= jumpChance)
+        {
+            if (change)
+                jumped = true;
+        }
+        else
+        {
+            jumped = false;
+        }
     }
 
     void CheckActiveArea()
@@ -286,19 +381,39 @@ public class Player2 : MonoBehaviour {
     }
 
     void DetectDirectionalInputs() {
-		if (Input.GetKey (gm.left))
-			input.x = -1;
-		else if (Input.GetKey (gm.right))
-			input.x = 1;
-		else
-			input.x = 0;
-		if (Input.GetKey (gm.down))
-			input.y = -1;
-		else if (Input.GetKey (gm.down))
-			input.y = 1;
-		else
-			input.y = 0;
-	}
+        if (player.GetAxis(0) > -0.2f && player.GetAxis(0) < 0.2f && player.GetAxis(2) > -0.2f)
+        {
+            input.x = 0;
+            input.y = 0;
+        }
+        else if (player.GetAxis(2) < -0.5f)
+        {
+            input.y = -1;
+            input.x = 0;
+        }
+        else if (player.GetAxis(0) > 0.2f)
+        {
+            input.x = 1;
+            input.y = 0;
+        }
+        else if (player.GetAxis(0) < -0.2f)
+        {
+            input.x = -1;
+            input.y = 0;
+        }
+        //if (Input.GetKey (gm.left))
+        //	input.x = -1;
+        //else if (Input.GetKey (gm.right))
+        //	input.x = 1;
+        //else
+        //	input.x = 0;
+        //if (Input.GetKey (gm.down))
+        //	input.y = -1;
+        //else if (Input.GetKey (gm.down))
+        //	input.y = 1;
+        //else
+        //	input.y = 0;
+    }
 
     void ColPhysChecks()
     {
@@ -348,7 +463,7 @@ public class Player2 : MonoBehaviour {
             facingRight = false;
         }
 
-        if (Input.GetKeyDown(gm.attack) && !controller.collisions.below && !divekicked)
+        if (player.GetButtonDown("attack") && !controller.collisions.below && !divekicked)
             divekicked = true;
 
         if (controller.collisions.below)
@@ -388,7 +503,7 @@ public class Player2 : MonoBehaviour {
 
     void DetectSlideAttack()
     {
-        if (Input.GetKeyDown(gm.attack) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
+        if (player.GetButtonDown("attack") && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
         {
             slideAttacked = true;
             crouching = false;
@@ -417,7 +532,7 @@ public class Player2 : MonoBehaviour {
 
     void DetectDash()
     {
-        if (moving && Input.GetKeyDown(gm.attack) && controller.collisions.below && !dashed && !slideAttacked)
+        if (moving && player.GetButtonDown("attack") && controller.collisions.below && !dashed && !slideAttacked)
         {
             dashed = true;
             if (facingLeft)
@@ -454,12 +569,8 @@ public class Player2 : MonoBehaviour {
 
     void DetectJumping()
     {
-        if (Input.GetKeyDown(gm.jump) &&
-            !inPushBack &&
-            !wallSplat)
+        if (player.GetButtonDown("jump") && !inPushBack)
         {
-            if (inPushBack)
-                print("jumping while in push back");
             guarded = false;
             if (controller.collisions.below)
             {
@@ -479,18 +590,58 @@ public class Player2 : MonoBehaviour {
         if (facingRight && controller.collisions.isAirborne() && !clinging)
             playerSprite.sprite = jumpFallRight;
 
-        if (Input.GetKeyDown(gm.jump) &&
+        if (player.GetButtonDown("jump") &&
             !controller.collisions.below &&
             !doubleJumped &&
-            !clinging &&
-            !inPushBack &&
-            !wallSplat)
+            !clinging)
         {
-            if(inPushBack)
-                print("jumping while in push back");
             velocity.y = jumpPower;
             doubleJumped = true;
         }
+
+        //if (player.GetButtonDown("jump") &&
+        //    !inPractice &&
+        //    !inPushBack &&
+        //    !wallSplat)
+        //{
+        //    jumped = true;
+        //    guarded = false;
+        //}
+
+        //if (inPushBack || wallSplat)
+        //    jumped = false;
+
+        //if (controller.collisions.below && jumped)
+        //{
+        //    velocity.y = jumpPower;
+        //    jumped = false;
+        //}
+
+        //if (facingLeft && !clinging && !crouching && !guarded && !stunned)
+        //    playerSprite.sprite = runLeftSprite;
+
+        //if (facingRight && !clinging && !crouching && !guarded && !stunned)
+        //    playerSprite.sprite = runRightSprite;
+
+        //if (facingLeft && controller.collisions.isAirborne() && !clinging)
+        //    playerSprite.sprite = jumpFallLeft;
+
+        //if (facingRight && controller.collisions.isAirborne() && !clinging)
+        //    playerSprite.sprite = jumpFallRight;
+
+        //if (jumped &&
+        //    !controller.collisions.below &&
+        //    !doubleJumped &&
+        //    !clinging &&
+        //    !inPushBack &&
+        //    !wallSplat)
+        //{
+        //    if(inPushBack)
+        //        print("jumping while in push back");
+        //    velocity.y = jumpPower;
+        //    doubleJumped = true;
+        //    jumped = false;
+        //}
     }
 
     void DetectClinging()
@@ -555,7 +706,7 @@ public class Player2 : MonoBehaviour {
         print("cling angle = " + clingAngle);
 
         if (clinging &&
-            Input.GetKeyDown(gm.jump) &&
+            player.GetButtonDown("jump") &&
             !inPushBack &&
             !wallSplat)
         {
@@ -594,7 +745,7 @@ public class Player2 : MonoBehaviour {
                 playerSprite.sprite = jumpFallRight;
         }
 
-        if (clinging && Input.GetKeyDown(gm.attack))
+        if (clinging && player.GetButtonDown("attack"))
         {
             canPlayClingSound = true;
             if (upRightCling || rightCling)
@@ -646,6 +797,12 @@ public class Player2 : MonoBehaviour {
 
         if (controller.collisions.isAirborne() && !clinging)
             canPlayClingSound = true;
+
+        if (clinging)
+        {
+            divekicked = false;
+            slideAttacked = false;
+        }
     }
 
     void DetectGuard()
@@ -653,7 +810,7 @@ public class Player2 : MonoBehaviour {
         if (!guarded)
             lockFacing = false;
 
-        if (Input.GetKey(gm.guard) &&
+        if (player.GetButton("guard") &&
             !controller.collisions.isAirborne() &&
             !inRespawn)
             guarded = true;
@@ -690,13 +847,13 @@ public class Player2 : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(gm.jump))
+        if (jumped)
             guarded = false;
     }
 
     void DetectProjectile()
     {
-        if (Input.GetKeyDown(gm.projectile) &&
+        if (player.GetButtonDown("projectile") &&
             !divekicked &&
             !slideAttacked &&
             !guarded &&
@@ -1027,6 +1184,25 @@ public class Player2 : MonoBehaviour {
         {
             splattedLeft = false;
             splattedRight = false;
+        }
+
+        if (dead)
+        {
+            divekicked = false;
+            slideAttacked = false;
+            playerIcon.enabled = false;
+            velocity.x = 0;
+            velocity.y = 0;
+            controller.Move(velocity * Time.deltaTime);
+        }
+        else
+            playerIcon.enabled = true;
+
+        if (Menu.freeze)
+        {
+            velocity.x = 0;
+            velocity.y = 0;
+            controller.Move(velocity * Time.deltaTime);
         }
     }
 

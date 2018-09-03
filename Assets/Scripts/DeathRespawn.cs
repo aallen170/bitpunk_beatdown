@@ -133,7 +133,7 @@ public class DeathRespawn : MonoBehaviour {
             }
             if (p2IncrementScore)
             {
-                p2Score.gameScore++;
+                p1Score.gameScore++;
                 p2IncrementScore = false;
             }
             p2DeathCount++;

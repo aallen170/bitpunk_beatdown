@@ -316,6 +316,15 @@
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
     </Reference>
+    <Reference Include="Rewired_Windows_Lib">
+      <HintPath>Assets/Scripts/Rewired/Internal/Libraries/Runtime/Rewired_Windows_Lib.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>Assets/Scripts/Rewired/Internal/Libraries/Runtime/Rewired_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Editor">
+      <HintPath>Assets/Scripts/Rewired/Internal/Libraries/Editor/Rewired_Editor.dll</HintPath>
+    </Reference>
     <Reference Include="mscorlib">
       <HintPath>C:\Program Files\Unity\Editor\Data\MonoBleedingEdge\lib\mono\2.0-api\mscorlib.dll</HintPath>
     </Reference>
@@ -368,9 +377,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AdvancedPolygonCollider\Script\Editor\AdvancedPolygonColliderEditor.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Extras\ControlMapper\Scripts\Editor\ControlMapperInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Extras\ControlMapper\Scripts\Editor\CustomButtonInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Extras\ControlMapper\Scripts\Editor\CustomSliderInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Extras\ControlMapper\Scripts\Editor\CustomToggleInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Integration\UnityUI\Editor\RewiredStandaloneInputModuleInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\ControllerDataFilesInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\CustomInspector_External.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\HardwareJoystickMapInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\HardwareJoystickTemplateMapInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\InitializerInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\InputManagerInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\PlayerControllerInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\PlayerMouseInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\CustomInspectors\UserDataStore_PlayerPrefsInspector.cs" />
+    <Compile Include="Assets\Scripts\Rewired\Internal\Scripts\Editor\UnityEditorBridge.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AdvancedPolygonCollider\Readme.txt" />
+    <None Include="Assets\Scripts\Rewired\Documentation\ReadMe.txt" />
+    <None Include="Assets\Scripts\Rewired\Documentation\ReleaseNotes.txt" />
+    <None Include="Assets\Scripts\Rewired\Documentation\licences.txt" />
+    <None Include="Assets\Scripts\Rewired\Internal\Libraries\Runtime\Rewired_Core.XML" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Dark.uss" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Styles\Main_Light.uss" />
     <None Include="Packages\com.unity.package-manager-ui\Editor\Resources\Templates\Alert.uxml" />

@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Rewired;
 
 [RequireComponent(typeof(Controller2D))]
 
 public class Player1 : MonoBehaviour
 {
-
+    #region Variables
+    #region Inspector_Values
     [Range(1, 50)] public float moveSpeed = 20;
     [Range(1, 100)] public float jumpPower = 50;
     [Range(1, 300)] public float fallSpeed = 100;
@@ -26,7 +28,9 @@ public class Player1 : MonoBehaviour
     [Range(1, 100)] public float pushBackSpeed = 50;
     [Range(1, 100)] public float pushBackActiveFrames = 10;
     [Range(1, 100)] public float stunActiveFrames = 60;
+    #endregion Inspector_Values
 
+    #region Frame_Counts
     float dashFrameCount = 0;
     float clingFrameCount = 0;
     float slideAttackFrameCount = 0;
@@ -34,7 +38,9 @@ public class Player1 : MonoBehaviour
     float guardFrameCount = 0;
     float pushBackFrameCount = 0;
     float stunFrameCount = 0;
+    #endregion Frame_Counts
 
+    #region Player_States
     bool doubleJumped = false;
     [HideInInspector] public bool divekicked = false;
     [HideInInspector] public bool slideAttacked = false;
@@ -68,7 +74,15 @@ public class Player1 : MonoBehaviour
     bool grounded;
     bool climbingSlope;
     bool descendingSlope;
+    bool clinging = false;
+    [HideInInspector] public bool dead = false;
 
+    bool lockFacing = false;
+
+    [HideInInspector] public bool invincible = false;
+    #endregion Player_States
+
+    #region Physics
     float accelerationTimeGrounded;
     float accelerationTimeAirborne;
 
@@ -78,26 +92,29 @@ public class Player1 : MonoBehaviour
     float velocityXSmoothing;
 
     Vector3 velocity;
+    Vector3 standingPos;
+    #endregion Physics
 
+    #region Input
+    Vector2 input;
     Controller2D controller;
+    P1GameManager gm;
+    #endregion Input
 
+    #region Sprites
     SpriteRenderer playerSprite;
     SpriteRenderer playerIcon;
     SpriteRenderer opponentSprite;
     SpriteRenderer opponentIcon;
-
-    Vector3 standingPos;
-
-    Vector2 input;
-
-    bool clinging = false;
 
     public Sprite runLeftSprite, runRightSprite, upClingLeftSprite, upClingRightSprite, upLeftClingSprite,
     upRightClingSprite, leftClingSprite, rightClingSprite, jumpFallLeft, jumpFallRight, crouchLeftSprite,
     crouchRightSprite, divekickRightSprite, divekickLeftSprite, slideAttackLeftSprite, slideAttackRightSprite,
     guardRightSprite, guardLeftSprite, pushBackLeftSprite, pushBackRightSprite, wallSplatLeftSprite,
         wallSplatRightSprite, stunnedLeftSprite, stunnedRightSprite, dashLeftSprite, dashRightSprite;
+    #endregion Sprites
 
+    #region Collisions
     Collider2D collidedObject;
 
     [HideInInspector] public BoxCollider2D boxCollider;
@@ -107,14 +124,18 @@ public class Player1 : MonoBehaviour
 
     bool leftCollision, rightCollision, bottomCollision, topCollision;
 
-    [HideInInspector] public bool dead = false;
+    PolygonCollider2D p1Hurtbox, p2Hurtbox;
+    #endregion Collisions
 
+    #region Respawn
     GameObject respawnUp, respawnDown, respawnRight, respawnLeft, opponent;
 
     BoxCollider2D activeAreaUp, activeAreaDown, activeAreaRight, activeAreaLeft;
 
     [HideInInspector] public bool inUpArea, inDownArea, inLeftArea, inRightArea;
+    #endregion Respawn
 
+    #region External_Scripts
     Player1 p1Script;
     Player2 p2Script;
 
@@ -122,23 +143,23 @@ public class Player1 : MonoBehaviour
     P2Score p2Score;
 
     Projectile playerProjectileScript, opponentProjectileScript;
+    #endregion External_Scripts
 
+    #region Audio
     [HideInInspector] public AudioSource killSound, clingSound;
 
     bool canPlayClingSound = true;
+    #endregion Audio
 
+    #region Win
     public static bool p1Win = false;
     public static bool p2Win = false;
 
-    Canvas p1WinCanvas, p2WinCanvas;
+    //Canvas p1WinCanvas, p2WinCanvas;
+    #endregion Win
 
-    bool lockFacing = false;
-
-    PolygonCollider2D p1Hurtbox, p2Hurtbox;
-
-    P1GameManager gm;
-
-    [HideInInspector] public bool invincible = false;
+    Player player;
+    #endregion Variables
 
     void Start()
     {
@@ -179,11 +200,11 @@ public class Player1 : MonoBehaviour
         p1Win = p2Win = false;
         opponentSprite.enabled = true;
         opponentIcon.enabled = true;
-        p1WinCanvas = GameObject.FindGameObjectWithTag("P1Win").
+        //p1WinCanvas = GameObject.FindGameObjectWithTag("P1Win").
             GetComponent<Canvas>();
-        p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
+        //p2WinCanvas = GameObject.FindGameObjectWithTag("P2Win").
             GetComponent<Canvas>();
-        p1WinCanvas.enabled = p2WinCanvas.enabled = false;
+        //p1WinCanvas.enabled = p2WinCanvas.enabled = false;
         killSound = GetComponents<AudioSource>()[0];
         clingSound = GetComponents<AudioSource>()[1];
         p1Hurtbox = GameObject.FindGameObjectWithTag("Player1").
@@ -195,6 +216,7 @@ public class Player1 : MonoBehaviour
         opponentProjectileScript = GameObject.FindGameObjectWithTag("P2Projectile").
             GetComponent<Projectile>();
         gm = P1GameManager.GM;
+        player = ReInput.players.GetPlayer(0);
     }
 
     void Update()
@@ -235,24 +257,24 @@ public class Player1 : MonoBehaviour
             print("guarding");
     }
 
-    void UpdateScore()
-    {
-        if (p1Score.gameScore == 5)
-        {
-            p1Win = true;
-            p1WinCanvas.enabled = true;
-        }
-        if (p2Score.gameScore == 5)
-        {
-            p2Win = true;
-            p2WinCanvas.enabled = true;
-        }
+    //void UpdateScore()
+    //{
+    //    if (p1Score.gameScore == 5)
+    //    {
+    //        p1Win = true;
+    //        p1WinCanvas.enabled = true;
+    //    }
+    //    if (p2Score.gameScore == 5)
+    //    {
+    //        p2Win = true;
+    //        p2WinCanvas.enabled = true;
+    //    }
 
-        if (p1Win && gameObject.tag == "Player1")
-            Destroy(opponent);
-        if (p2Win && gameObject.tag == "Player2")
-            Destroy(opponent);
-    }
+    //    if (p1Win && gameObject.tag == "Player1")
+    //        Destroy(opponent);
+    //    if (p2Win && gameObject.tag == "Player2")
+    //        Destroy(opponent);
+    //}
 
     void CheckActiveArea()
     {
@@ -310,18 +332,39 @@ public class Player1 : MonoBehaviour
 
     void DetectDirectionalInputs()
     {
-        if (Input.GetKey(gm.left))
-            input.x = -1;
-        else if (Input.GetKey(gm.right))
-            input.x = 1;
-        else
+        //input.x = player.GetAxisRaw(0);
+        //input.y = player.GetAxisRaw(2);
+        //print("input.x: " + input.x + "\ninput.y: " + input.y);
+        if (player.GetAxis(0) > -0.2f && player.GetAxis(0) < 0.2f && player.GetAxis(2) > -0.2f)
+        {
             input.x = 0;
-        if (Input.GetKey(gm.down))
-            input.y = -1;
-        else if (Input.GetKey(gm.up))
-            input.y = 1;
-        else
             input.y = 0;
+        }
+        else if (player.GetAxis(2) < -0.5f)
+        {
+            input.y = -1;
+            input.x = 0;
+        }
+        else if (player.GetAxis(0) > 0.2f)
+        {
+            input.x = 1;
+            input.y = 0;
+        }
+        else if (player.GetAxis(0) < -0.2f)
+        {
+            input.x = -1;
+            input.y = 0;
+        }
+        //else if (Input.GetKey(gm.right))
+        //    input.x = 1;
+        //else
+        //    input.x = 0;
+        //if (Input.GetKey(gm.down))
+        //    input.y = -1;
+        //else if (Input.GetKey(gm.up))
+        //    input.y = 1;
+        //else
+        //    input.y = 0;
     }
 
     void ColPhysChecks()
@@ -372,7 +415,7 @@ public class Player1 : MonoBehaviour
             facingRight = false;
         }
 
-        if (Input.GetKeyDown(gm.attack) && !controller.collisions.below && !divekicked)
+        if (player.GetButtonDown("attack") && !controller.collisions.below && !divekicked)
             divekicked = true;
 
         if (controller.collisions.below)
@@ -412,7 +455,7 @@ public class Player1 : MonoBehaviour
 
     void DetectSlideAttack()
     {
-        if (Input.GetKeyDown(gm.attack) && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
+        if (player.GetButtonDown("attack") && !controller.collisions.isAirborne() && crouching && canSlideAttack && !guarded)
         {
             slideAttacked = true;
             crouching = false;
@@ -442,7 +485,7 @@ public class Player1 : MonoBehaviour
     void DetectDash()
     {
         if (moving &&
-            Input.GetKeyDown(gm.attack) &&
+            player.GetButtonDown("attack") &&
             controller.collisions.below &&
             !dashed &&
             !slideAttacked)
@@ -482,7 +525,7 @@ public class Player1 : MonoBehaviour
 
     void DetectJumping()
     {
-        if (Input.GetKeyDown(gm.jump) && !inPushBack)
+        if (player.GetButtonDown("jump") && !inPushBack)
         {
             guarded = false;
             if (controller.collisions.below)
@@ -503,7 +546,7 @@ public class Player1 : MonoBehaviour
         if (facingRight && controller.collisions.isAirborne() && !clinging)
             playerSprite.sprite = jumpFallRight;
 
-        if (Input.GetKeyDown(gm.jump) &&
+        if (player.GetButtonDown("jump") &&
             !controller.collisions.below &&
             !doubleJumped &&
             !clinging)
@@ -574,7 +617,7 @@ public class Player1 : MonoBehaviour
 
         print("cling angle = " + clingAngle);
 
-        if (clinging && Input.GetKeyDown(gm.jump))
+        if (clinging && player.GetButtonDown("jump"))
         {
             divekicked = false;
             canPlayClingSound = true;
@@ -611,7 +654,7 @@ public class Player1 : MonoBehaviour
                 playerSprite.sprite = jumpFallRight;
         }
 
-        if (clinging && Input.GetKeyDown(gm.attack))
+        if (clinging && player.GetButtonDown("attack"))
         {
             canPlayClingSound = true;
             if (upRightCling || rightCling)
@@ -663,6 +706,12 @@ public class Player1 : MonoBehaviour
 
         if (controller.collisions.isAirborne() && !clinging)
             canPlayClingSound = true;
+
+        if (clinging)
+        {
+            divekicked = false;
+            slideAttacked = false;
+        }
     }
 
     void DetectGuard()
@@ -670,7 +719,7 @@ public class Player1 : MonoBehaviour
         if (!guarded)
             lockFacing = false;
 
-        if (Input.GetKey(gm.guard) &&
+        if (player.GetButton("guard") &&
             !controller.collisions.isAirborne() &&
             !inRespawn)
             guarded = true;
@@ -707,13 +756,13 @@ public class Player1 : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(gm.jump))
+        if (player.GetButtonDown("jump"))
             guarded = false;
     }
 
     void DetectProjectile()
     {
-        if (Input.GetKeyDown(gm.projectile) &&
+        if (player.GetButtonDown("projectile") &&
             !divekicked &&
             !slideAttacked &&
             !guarded &&
@@ -777,12 +826,6 @@ public class Player1 : MonoBehaviour
                 stunnedOnLeftWall = true;
             if (splattedRight)
                 stunnedOnRightWall = true;
-        }
-
-        if (continueStun)
-        {
-            stunFrameCount = 0;
-            continueStun = false;
         }
 
         if (stunned)
@@ -1050,6 +1093,18 @@ public class Player1 : MonoBehaviour
         }
 
         if (dead)
+        {
+            divekicked = false;
+            slideAttacked = false;
+            playerIcon.enabled = false;
+            velocity.x = 0;
+            velocity.y = 0;
+            controller.Move(velocity * Time.deltaTime);
+        }
+        else
+            playerIcon.enabled = true;
+
+        if (Menu.freeze)
         {
             velocity.x = 0;
             velocity.y = 0;
